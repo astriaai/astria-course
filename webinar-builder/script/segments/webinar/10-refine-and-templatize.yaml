@@ -1,0 +1,62 @@
+id: 10-refine-and-templatize
+title: "Refine prompts, describe, templatize"
+order: 10
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:58:00-01:12:00"   # SRT entries ~413–592 — prompt refinement, Describe tool, templatization
+  gemini_reports:
+    - ".cache/gemini/chunk-010000-010400.json"   # 1:00-1:04 — prompt typing + Describe + paste-from-clipboard
+    - ".cache/gemini/s5-010600-010800.json"      # 1:06-1:08 — Pose modal → "back view"
+    - ".cache/gemini/s5-010800-011000.json"      # 1:08-1:10 — Face slot swap + image context menu
+    - ".cache/gemini/s5-011000-011200.json"      # 1:10-1:12 — Pack dropdown → New Pack
+  note: |
+    The 14-minute source range is distilled to four UI beats replayed inside
+    astria.ai/prompts: (1) show the cube grid + prompt box; (2) Describe +
+    Paste from clipboard; (3) Pose modal → back view, then a generated-image
+    context menu (Crop / Remove Background / Edit with Nano Banana 2);
+    (4) Pack dropdown → New Pack → name it. We skip the presenter's Pexels /
+    YouTube detour — it leaves the Astria UI and the Describe affordance is
+    what carries the idea.
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/10-refine-and-templatize.ts"
+
+caption:
+  eyebrow: "METHOD · 10"
+  html: |
+    Refine, describe,
+    <span class="accent">templatize</span>.
+
+narration: |
+  Most bugs you'll hit aren't the model being wrong — they're conflicts
+  between the crop you asked for and the references you loaded. A medium
+  shot with a shoe reference tries to cram a face and shoes into one
+  frame and distorts. Keep the crop, the references, and the prompt
+  telling the same story.
+
+  When you need finer control than the Lookbook gives you, go to the
+  prompt box. A handful of high-impact keywords goes a long way —
+  diffused lighting, realistic skin, soft expression. That's where brand
+  DNA lives: serious or pleased, high-end or low-cost.
+
+  The Describe tool closes the loop between references and prompts. Let
+  me grab a reference from Unsplash — a search for fashion photography
+  pulls scenes close to what we want. Copy one, back to Astria, click
+  Paste from clipboard, then Describe. The tool extracts a prompt, but
+  it listens to the references you already have and avoids describing
+  them. No more white shirt in the prompt fighting a yellow dress in
+  the reference.
+
+  Once a look works — model, pose, lighting, expression — stop iterating
+  and templatize. Turn the pack into a template. From there it's a
+  digital product: the brand's studio picks a template, uploads a
+  packshot, and runs the lookbook. Build once, scale forever.
+
+avatar:
+  emotion: "confident"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

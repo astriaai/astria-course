@@ -33,10 +33,14 @@ interface WebinarYaml {
   };
 }
 
-const loadWebinar = () =>
-  yaml.load(readFileSync(join(ROOT, "script", "webinar.yaml"), "utf-8")) as WebinarYaml;
-const loadSegment = (id: string) =>
-  yaml.load(readFileSync(join(ROOT, "script", "segments", `${id}.yaml`), "utf-8")) as SegmentYaml;
+const loadProject = (project: string) =>
+  yaml.load(
+    readFileSync(join(ROOT, "script", "projects", `${project}.yaml`), "utf-8"),
+  ) as WebinarYaml;
+const loadSegment = (project: string, id: string) =>
+  yaml.load(
+    readFileSync(join(ROOT, "script", "segments", project, `${id}.yaml`), "utf-8"),
+  ) as SegmentYaml;
 
 function resolveConfig(segment: SegmentYaml, webinar: WebinarYaml) {
   return {
@@ -167,12 +171,12 @@ async function download(url: string, dest: string) {
   writeFileSync(dest, Buffer.from(await res.arrayBuffer()));
 }
 
-export async function generateAvatar(segmentId: string, audioPath?: string): Promise<string> {
-  const webinar = loadWebinar();
-  const segment = loadSegment(segmentId);
-  const cfg = resolveConfig(segment, webinar);
+export async function generateAvatar(project: string, segmentId: string, audioPath?: string): Promise<string> {
+  const projectCfg = loadProject(project);
+  const segment = loadSegment(project, segmentId);
+  const cfg = resolveConfig(segment, projectCfg);
 
-  const cacheDir = join(ROOT, "assets", "avatars");
+  const cacheDir = join(ROOT, "assets", "avatars", project);
   mkdirSync(cacheDir, { recursive: true });
   const key = cacheKey(segment.narration, cfg, audioPath);
   const cached = join(cacheDir, `${segmentId}.${key}.mp4`);
@@ -218,14 +222,21 @@ export async function generateAvatar(segmentId: string, audioPath?: string): Pro
 
 // CLI
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const id = process.argv[2];
+  const projectIdx = process.argv.indexOf("--project");
+  const project = projectIdx !== -1 ? process.argv[projectIdx + 1] : "webinar";
   const audioIdx = process.argv.indexOf("--audio");
   const audioPath = audioIdx !== -1 ? process.argv[audioIdx + 1] : undefined;
+  const positional = process.argv.slice(2).filter((a, i, arr) => {
+    if (a === "--project" || a === "--audio") return false;
+    if (i > 0 && (arr[i - 1] === "--project" || arr[i - 1] === "--audio")) return false;
+    return true;
+  });
+  const id = positional[0];
   if (!id) {
-    console.error("Usage: tsx pipeline/generate-avatar.ts <segment-id> [--audio path/to.mp3]");
+    console.error("Usage: tsx pipeline/generate-avatar.ts [--project <name>] <segment-id> [--audio path/to.mp3]");
     process.exit(1);
   }
-  generateAvatar(id, audioPath).catch((e) => {
+  generateAvatar(project, id, audioPath).catch((e) => {
     console.error(e);
     process.exit(1);
   });

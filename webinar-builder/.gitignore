@@ -7,8 +7,9 @@ out/
 .work/
 transcript.json
 storageState.json
-assets/avatars/*.mp4
-assets/avatars/*.mp3
-assets/audio/*.wav
-assets/captures/*.mp4
+assets/avatars/**/*.mp4
+assets/avatars/**/*.mp3
+assets/audio/**/*.wav
+assets/captures/**/*.mp4
+assets/results/**/*.mp4
 !assets/**/.gitkeep

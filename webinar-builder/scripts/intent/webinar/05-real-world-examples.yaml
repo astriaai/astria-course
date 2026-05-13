@@ -1,0 +1,54 @@
+id: 05-real-world-examples
+title: "AI is already in the shoot — real brand examples"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:16:50-00:18:24"
+  note: |
+    Presenter transitions from "who this is for" into proof that the AI
+    photoshoot is already in production at real brands. Covers Saks
+    (Shai Yechezkel rebuilt the site with AI template sets), Ronny Kobo
+    (DTC, full AI editorial), and the big-player wave (Mango, H&M, Zara).
+    Closes with "the world is already there de facto."
+
+urls:
+  - label: "Saks"
+    url: "https://www.saksfifthavenue.com/"
+  - label: "Ronny Kobo"
+    url: "https://ronnykobo.com/collections/new-arrivals"
+
+requires_auth: false
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 55
+
+beats:
+  - id: saks-land
+    at: "0-4s"
+    say: "The AI world isn't theoretical — it's already here."
+    show: "Load Saks homepage; hero visible."
+    action: settle
+
+  - id: saks-scroll
+    at: "4-22s"
+    say: "Shai Yechezkel rebuilt their editorial imagery end-to-end with AI."
+    show: "Scroll through the Saks homepage editorial blocks."
+    action: { type: scroll-to, y_end: 3200, duration_ms: 15000 }
+
+  - id: ronny-land
+    at: "22-30s"
+    say: "Here's Ronny Kobo — DTC fashion, AI editorial on every product page."
+    show: "Navigate to the Spen bodysuit product page; hero image visible."
+    action: navigate
+
+  - id: ronny-scroll
+    at: "30-50s"
+    say: "Mango, H&M, Zara — the big players are doing the same thing. The industry is already implementing."
+    show: "Scroll through the product page gallery and detail shots."
+    action: { type: scroll-to, y_end: 2400, duration_ms: 16000 }
+
+  - id: settle
+    at: "50-55s"
+    say: "What remains is to direct it well, scale it up, and do it precisely."
+    show: "Hold on a styled-look hero."
+    action: settle

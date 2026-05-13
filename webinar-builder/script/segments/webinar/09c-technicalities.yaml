@@ -1,0 +1,54 @@
+id: 09c-technicalities
+title: "Technicalities — model, resolution, aspect, count"
+order: 9
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Split from 09-lookbook-references. This is the technicalities piece:
+    confirm Nano Banana 2, set resolution to 2K (4K once locked), aspect
+    3:4, 2 images per prompt for fast iteration.
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/09c-technicalities.ts"
+
+caption:
+  eyebrow: "DEMO · 09c"
+  html: |
+    A few
+    <span class="accent">technicalities</span>.
+
+slide:
+  bullets:
+    - "Model → Nano Banana 2"
+    - "Resolution → 2K to iterate, 4K once locked"
+    - "Aspect ratio → 3:4 to match the lookbook"
+    - "2 images per prompt — bump to 4 for variation"
+  # Timings aligned to TTS via /tmp/09c-transcribe/transcript.json (≈24s narration).
+  #   1 Model → Nano Banana 2          "Model"       @2.69
+  #   2 Resolution → 2K …              "Resolution"  @6.65
+  #   3 Aspect ratio → 3:4 …           "Aspect"      @12.97
+  #   4 2 images per prompt …          "iteration"   @18.78
+  bullet_starts: [2.5, 6.4, 12.7, 18.6]
+
+narration: |
+  Now for a few technicalities.
+
+  Model — make sure Nano Banana 2 is selected.
+
+  Resolution — 2K for iterating quickly. Once you're happy with the
+  look, switch to 4K.
+
+  Aspect ratio — 3:4. Most lookbooks are 3:4.
+
+  And for quicker iteration, two images per prompt. Later, bump it to
+  four if you want more variation.
+
+avatar:
+  emotion: "focused"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

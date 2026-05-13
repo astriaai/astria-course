@@ -1,0 +1,60 @@
+Cinematic Video
+is now available — prompt for multishot cinematic videos
+WAN 2.7
+is now available — image edit model
+Seedance 2
+is now available — next-gen video model
+Astria
+Templates
+Login
+Welcome back
+Log in to Astria
+Sign in with Google
+By continuing, you agree to our
+Terms of Service
+and
+Privacy Policy
+First name
+Last name
+Email
+Password
+Already have an account?
+Log in
+Email
+Password
+Forgot password?
+Don't have an account?
+Sign up
+Use Password
+Astria
+Tailor-made AI
+Company
+Terms & Conditions
+Content Policy
+Privacy
+Pricing
+Affiliate
+Support
+Resources
+How-To
+Use cases
+Blog
+Articles
+FAQ
+API
+Product
+Photoshop plugin
+Community
+Gallery
+Models
+Docs
+© 2022-2026 Astria
+We use cookies to improve your experience. By continuing to use this site, you consent to our use of cookies. See our
+Privacy Policy
+for details.
+Accept
+Reject
+Draw mask
+Brush
+Clear
+Use mask

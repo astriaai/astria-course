@@ -1,8 +1,10 @@
 /**
- * Concat all per-segment MP4s in the order declared in script/webinar.yaml
- * into a single reviewable draft: out/_full-draft.mp4
+ * Concat all per-segment MP4s in the order declared in
+ * script/projects/<project>.yaml into a single reviewable draft:
+ *   out/<project>/_full-draft.mp4
  *
- *   tsx pipeline/stitch.ts
+ *   tsx pipeline/stitch.ts                            (default project: webinar)
+ *   tsx pipeline/stitch.ts --project video-style-transfer
  */
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -13,15 +15,21 @@ import yaml from "js-yaml";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
+function parseProject(): string {
+  const idx = process.argv.indexOf("--project");
+  return idx !== -1 ? process.argv[idx + 1] : "webinar";
+}
+
 function main() {
-  const webinar = yaml.load(readFileSync(join(ROOT, "script", "webinar.yaml"), "utf-8")) as {
-    segments: string[];
-  };
+  const project = parseProject();
+  const cfg = yaml.load(
+    readFileSync(join(ROOT, "script", "projects", `${project}.yaml`), "utf-8"),
+  ) as { segments: string[] };
 
   const clips: string[] = [];
   const missing: string[] = [];
-  for (const id of webinar.segments) {
-    const p = join(ROOT, "out", `${id}.mp4`);
+  for (const id of cfg.segments) {
+    const p = join(ROOT, "out", project, `${id}.mp4`);
     if (existsSync(p)) clips.push(p);
     else missing.push(id);
   }
@@ -30,11 +38,12 @@ function main() {
   }
   if (clips.length === 0) throw new Error("nothing to stitch");
 
-  mkdirSync(join(ROOT, "out"), { recursive: true });
-  const listPath = join(ROOT, "out", "_concat.txt");
+  const outDir = join(ROOT, "out", project);
+  mkdirSync(outDir, { recursive: true });
+  const listPath = join(outDir, "_concat.txt");
   writeFileSync(listPath, clips.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join("\n"));
 
-  const outPath = join(ROOT, "out", "_full-draft.mp4");
+  const outPath = join(outDir, "_full-draft.mp4");
 
   // Two-pass: re-encode for safety (segments may have different keyframe spacings).
   const r = spawnSync(
@@ -56,7 +65,7 @@ function main() {
   );
   if (r.status !== 0) throw new Error("ffmpeg concat failed");
 
-  console.log(`\n[stitch] ${clips.length} clips → ${outPath}`);
+  console.log(`\n[stitch] project=${project}: ${clips.length} clips → ${outPath}`);
 }
 
 main();

@@ -31,12 +31,14 @@ interface WebinarYaml {
   };
 }
 
-function loadWebinar(): WebinarYaml {
-  return yaml.load(readFileSync(join(ROOT, "script", "webinar.yaml"), "utf-8")) as WebinarYaml;
-}
-function loadSegment(id: string): SegmentYaml {
+function loadProject(project: string): WebinarYaml {
   return yaml.load(
-    readFileSync(join(ROOT, "script", "segments", `${id}.yaml`), "utf-8")
+    readFileSync(join(ROOT, "script", "projects", `${project}.yaml`), "utf-8"),
+  ) as WebinarYaml;
+}
+function loadSegment(project: string, id: string): SegmentYaml {
+  return yaml.load(
+    readFileSync(join(ROOT, "script", "segments", project, `${id}.yaml`), "utf-8")
   ) as SegmentYaml;
 }
 
@@ -101,14 +103,14 @@ export interface InworldResult {
   url: string;        // WaveSpeed cloudfront URL (for OmniHuman input)
 }
 
-export async function generateInworldAudio(segmentId: string): Promise<InworldResult> {
-  const webinar = loadWebinar();
-  const segment = loadSegment(segmentId);
+export async function generateInworldAudio(project: string, segmentId: string): Promise<InworldResult> {
+  const projectCfg = loadProject(project);
+  const segment = loadSegment(project, segmentId);
 
-  const voice = segment.avatar?.voice_id ?? webinar.defaults.tts?.voice_id ?? "Hades";
-  const rate = segment.avatar?.speaking_rate ?? webinar.defaults.tts?.speaking_rate ?? 1;
+  const voice = segment.avatar?.voice_id ?? projectCfg.defaults.tts?.voice_id ?? "Hades";
+  const rate = segment.avatar?.speaking_rate ?? projectCfg.defaults.tts?.speaking_rate ?? 1;
 
-  const audioDir = join(ROOT, "assets", "audio");
+  const audioDir = join(ROOT, "assets", "audio", project);
   mkdirSync(audioDir, { recursive: true });
   const key = cacheKey(segment.narration, voice, rate);
   const cached = join(audioDir, `${segmentId}.${key}.mp3`);
@@ -134,12 +136,19 @@ export async function generateInworldAudio(segmentId: string): Promise<InworldRe
 
 // CLI
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const id = process.argv[2];
+  const projectIdx = process.argv.indexOf("--project");
+  const project = projectIdx !== -1 ? process.argv[projectIdx + 1] : "webinar";
+  const positional = process.argv.slice(2).filter((a, i, arr) => {
+    if (a === "--project") return false;
+    if (i > 0 && arr[i - 1] === "--project") return false;
+    return true;
+  });
+  const id = positional[0];
   if (!id) {
-    console.error("Usage: tsx pipeline/generate-tts.ts <segment-id>");
+    console.error("Usage: tsx pipeline/generate-tts.ts [--project <name>] <segment-id>");
     process.exit(1);
   }
-  generateInworldAudio(id)
+  generateInworldAudio(project, id)
     .then((r) => console.log(JSON.stringify(r, null, 2)))
     .catch((e) => {
       console.error(e);

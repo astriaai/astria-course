@@ -1,0 +1,39 @@
+id: 09a-open-workspace
+title: "Open a Workspace for the brand"
+order: 9
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Split from the original 09-lookbook segment. This piece is just the
+    Astria UI: open the Workspace selector, pick "New workspace", name
+    it after the brand. Brand research (bobochoses tour) lives in 09b.
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/09a-open-workspace.ts"
+
+caption:
+  eyebrow: "DEMO · 09a"
+  html: |
+    Open a
+    <span class="accent">Workspace</span>.
+
+slide:
+  bullets:
+    - "Workspace selector → New workspace"
+    - "Name it after the brand"
+  # bullet_starts will be set after transcribe.
+
+narration: |
+  Let's start by opening a new workspace. Click the Workspace selector
+  next to the logo, pick "New workspace", and name it after the brand
+  you're working with. I'll name mine Bobo Choses.
+
+avatar:
+  emotion: "focused"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

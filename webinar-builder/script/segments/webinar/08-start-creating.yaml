@@ -1,0 +1,56 @@
+id: 08-start-creating
+title: "Your turn — start creating"
+order: 8
+visual: presenter-slide
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:31:00-00:32:40"
+  note: |
+    The presenter invites the audience to open a Workspace and start
+    building their own brand concept. Most of the source transcript in
+    this window is live Q&A/setup ("open the Generative tab", "I shared
+    the link in chat"); we distill it into a clean call-to-action.
+
+slide:
+  eyebrow: "YOUR TURN · 08"
+  title_html: |
+    Now <span class="accent">you</span> build.
+  bullets:
+    - "Open a Workspace — your team's shared room"
+    - "Pick a brand you actually love — real, not abstract"
+    - "Study the look — poses, faces, hair, makeup, expressions"
+    - "Let's get our hands dirty"
+  # Timings aligned to TTS via transcript.json (≈52 s narration).
+  #   1 "Open a Workspace …"        "let's open a workspace" @3.21
+  #   2 "Pick a brand …"             "Now pick a brand"        @28.92
+  #   3 "Study the look …"           "Pull up their current"   @40.75
+  #   4 "Let's get our hands dirty"  "Let's"                   @50.05
+  bullet_starts: [3.0, 28.7, 40.5, 49.85]
+
+narration: |
+  Alright — your turn.
+
+  First thing, let's open a Workspace. Think of it as a shared
+  room — your team, creatives, CMOs, photographers, all working
+  side by side. Every prompt, reference, and template you create
+  shows up live for everyone in there.
+
+  To set one up, click the Workspace selector at the top-left,
+  next to the logo, and pick "New workspace". Name it after
+  the brand you're working with, and hit "Create".
+
+  Now — pick a brand you actually love. Skip the made-up exercise
+  and grab something real. A designer you admire, a brand you've
+  worked with, maybe something local you've been watching.
+
+  Pull up their current material. Look at the poses, the faces,
+  the hair, the makeup, the expressions — what makes the look
+  theirs.
+
+  Let's get our hands dirty.
+
+avatar:
+  emotion: "warm"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

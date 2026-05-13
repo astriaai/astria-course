@@ -1,0 +1,104 @@
+id: 09b-brand-research
+title: "Brand research — what makes the brand recognizable"
+order: 9
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Brand research for Bobo Choses. Headless Chromium can't reliably
+    paint live bobochoses.com (Cloudflare bot detection / lazy-load).
+    Workaround: capture full-page PNGs once via
+    scripts/capture-bobo-pages.ts, concat them vertically, and let the
+    screencast-pip layout pan the composite as a static-image demo.
+
+screencast:
+  mode: "image"
+  url: "bobochoses.com"
+  # Three timed pages, switching with the narration. Anchors verified
+  # against /tmp/09b-transcribe/transcript.json:
+  #   t=0       "Here's the Bobo Choses website"
+  #   t=34.12   "Now let's examine the lookbook itself" → kids' product
+  #   t=50.81   "The women's lookbook follows the same pattern" → women's
+  #   t=67.57   "aspect ratio 3:4" / t=72.34 "back to Astria"
+  # Each page pans only partially — "not all the way" — so the audience
+  # sees enough of the page to recognise it, then the visual settles.
+  pages:
+    # Homepage — pan to lookbook section, then hold (scroll mode)
+    - src: "assets/captures/webinar/bobo-pages/home.png"
+      url: "bobochoses.com"
+      start: 0
+      duration: 34
+      pan_seconds: 8
+      pan_distance: 800
+    # Kids product — individual lookbook views (no scroll, contain-fit).
+    # Anchors: 37.33s "kids' product page" → 38.51s "medium" → 42.87s "full body"
+    - src: "assets/captures/webinar/bobo-pages/kids-medium.png"
+      url: "bobochoses.com/products/b126ac009-van-dog-t-shirt"
+      start: 34
+      duration: 9
+    - src: "assets/captures/webinar/bobo-pages/kids-fullbody.png"
+      url: "bobochoses.com/products/b126ac009-van-dog-t-shirt"
+      start: 43
+      duration: 8
+    # Women's product — two lookbook views (medium / full body). The
+    # bobochoses page only has 4 product images (packshot, medium, fabric
+    # detail, full body); no separate "dynamic / hands behind head" view
+    # exists, so the full-body image holds through that line of narration.
+    # Anchors: 50.81s "women's lookbook" → 57.29s "full body" → 67.57s "aspect ratio"
+    - src: "assets/captures/webinar/bobo-pages/women-medium.png"
+      url: "bobochoses.com/products/b126ad005-tomatoes-print-fitted-t-shirt"
+      start: 51
+      duration: 6
+    - src: "assets/captures/webinar/bobo-pages/women-fullbody.png"
+      url: "bobochoses.com/products/b126ad005-tomatoes-print-fitted-t-shirt"
+      start: 57
+      duration: 29                # holds through "dynamic shot" + "aspect ratio" + "back to Astria"
+
+caption:
+  eyebrow: "RESEARCH · 09b"
+  html: |
+    Brand
+    <span class="accent">research</span>.
+
+slide:
+  bullets:
+    - "Study the lookbook: backgrounds, models, expressions"
+    - "Note ages, hair, skin tone — what makes the brand recognizable"
+    - "Inspect product pages: framing, poses, headroom"
+    - "3:4 is the lookbook standard"
+  # bullet_starts will be set after transcribe.
+
+narration: |
+  Here's the Bobo Choses website. Let's think about the brand's
+  identity. How does the lookbook look — white studio, gray, concrete
+  floor, or outdoor? How do the models look — age group, expression,
+  hair? And the poses — strict front, back, 45-side, detail view, or
+  something more dynamic?
+
+  The adult faces have a neutral expression while the kids look a
+  little brighter. The women's hair is parted, the skin is pale.
+  Adult ages are around 22 to 26, kids around 8.
+
+  Now let's examine the lookbook itself. On the kids' product page, a
+  medium upper-torso waist-up view with very little headroom. The
+  full-body view leaves a lot of whitespace, with socks and flip-flops,
+  45-degree front, hands relaxed at the side.
+
+  The women's lookbook follows the same pattern — medium shot, upper
+  torso, head cropped, waist up. The full-body view has plenty of
+  whitespace, 45 degrees, legs in a V, hands at the side. And a
+  dynamic shot rotated, with hands behind the head.
+
+  The aspect ratio across the lookbook is 3:4 — quite common.
+
+  Now let's go back to Astria and simulate a photoshoot day. We'll try
+  a kids lookbook — one of the main pain points for brands, and where
+  they're usually happy to start migrating to AI. For starters, let's
+  get a baseline image to get things going.
+
+avatar:
+  emotion: "focused"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

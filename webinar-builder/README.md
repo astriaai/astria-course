@@ -1,10 +1,12 @@
 # webinar-builder
 
-A scriptable, rebuildable video webinar for the Astria fashion-lookbook course.
+A scriptable, rebuildable video harness. The default project is the Astria
+fashion-lookbook webinar; the same pipeline drives bi-weekly one-off tutorials
+(e.g. `video-style-transfer`) by addressing them with `--project <name>`.
 
-- **Script** (`script/webinar.yaml` + `script/segments/*.yaml`) is the source of truth.
+- **Script** (`script/projects/<project>.yaml` + `script/segments/<project>/*.yaml`) is the source of truth.
 - **Pipeline** (`pipeline/*.ts`) regenerates only what changed: narration audio, avatar clips, and the HTML composition.
-- **Render** (`hyperframes render`) produces the MP4.
+- **Render** (`hyperframes render`) produces the MP4 at `out/<project>/<segment>.mp4`.
 
 Edit a narration line → re-run `npm run build:segment -- <id>` → only that segment re-renders.
 
@@ -64,32 +66,58 @@ npm run build:all
 
 ## Editing a segment
 
-1. Open `script/segments/<id>.yaml`
+1. Open `script/segments/<project>/<id>.yaml` (default project: `webinar`)
 2. Tweak the `narration:` block
-3. `npm run build:segment -- <id>`
+3. `npm run build:segment -- <id>`     (or `--project <name> --segment <id>` for non-webinar projects)
 
-The slide content (title/bullets/footer) currently lives in `index.html`. For the POC this is inline for simplicity; when we add segments 3+ we'll split each segment into its own sub-composition under `compositions/`.
+## One-off tutorials
+
+The harness is project-keyed. To author a new bi-weekly video without touching
+the webinar, create a project manifest and segments under its namespace:
+
+```
+script/projects/<name>.yaml         # ordered segment list + defaults
+script/segments/<name>/<id>.yaml    # per-segment config
+scripts/record/<name>/<id>.ts       # (optional) Playwright recorder
+assets/results/<name>/              # finished demo videos for video-showcase
+```
+
+Then build with `npm run build -- --project <name> --all` (or use a project-specific
+script alias such as `build:vst` for `video-style-transfer`).
 
 ## Directory map
 
 ```
 webinar-builder/
-├── index.html                   # Root composition (single-segment POC)
+├── index.html                   # Per-segment composition, overwritten by build.ts
 ├── hyperframes.json             # HyperFrames project config
 ├── DESIGN.md                    # Visual identity (colors, type, motion)
 ├── script/
-│   ├── webinar.yaml             # Global defaults + segment order
+│   ├── projects/
+│   │   ├── webinar.yaml
+│   │   └── video-style-transfer.yaml
 │   └── segments/
-│       └── 03-traditional-photoshoot.yaml
+│       ├── webinar/             # 01-opening.yaml, 02-outline.yaml, …
+│       └── video-style-transfer/
+├── layouts/                     # avatar-hero.html, presenter-slide.html,
+│                                # screencast-pip.html, video-showcase.html
 ├── assets/
-│   ├── audio/                   # TTS / HeyGen audio, auto-generated
-│   ├── avatars/                 # HeyGen MP4s, hash-cached
-│   └── slides/                  # (future) PNG slide exports
+│   ├── audio/<project>/         # TTS audio per project
+│   ├── avatars/<project>/       # talking-head MP4s per project
+│   ├── captures/<project>/      # Playwright screencasts per project
+│   ├── results/<project>/       # finished demo videos (video-showcase intros)
+│   └── slides/                  # static slide imagery
+├── scripts/
+│   ├── auth/                    # storageState.json bootstrap
+│   ├── intent/<project>/        # natural-language intent yaml (planning)
+│   └── record/<project>/        # Playwright recording scripts
 ├── pipeline/
 │   ├── build.ts                 # orchestrator (npm run build:*)
-│   └── generate-avatar.ts       # HeyGen client (npm run avatar)
-└── out/
-    └── *.mp4                    # rendered outputs
+│   ├── stitch.ts                # concat segments → _full-draft.mp4
+│   └── record-screencast.ts     # Playwright runner
+└── out/<project>/
+    ├── *.mp4                    # rendered per-segment outputs
+    └── _full-draft.mp4          # stitched
 ```
 
 ## Roadmap

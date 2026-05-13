@@ -40,6 +40,18 @@ Topics: `data-attributes`, `gsap`, `compositions`, `rendering`, `examples`, `tro
 https://hyperframes.heygen.com/llms.txt
 ```
 
+## Environment
+
+`.env` (gitignored) holds the working API keys for this project — `dotenv/config` loads them automatically in `pipeline/*.ts`. **Assume they're set; don't ask the user to provide them.** Currently populated:
+
+- `VERTEX_API_KEY` — Gemini TTS (default narration path)
+- `HEYGEN_API_KEY` — HeyGen Avatar IV fallback
+- `REPLICATE_API_KEY` — Pruna AI talking-head + file uploads
+- `BYTEPLUS_ACCESS_KEY_ID` / `BYTEPLUS_SECRET_ACCESS_KEY` — OmniHuman 1.5 (BytePlus)
+- `WAVESPEED_API_KEY` — OmniHuman v1/v1.5 + InfiniteTalk (regular & fast) via WaveSpeed
+
+Override behavior with env flags rather than editing keys: `DRAFT=1` skips paid APIs, `NO_AVATAR=1` skips talking heads, `TTS_PROVIDER=inworld` switches off the default Gemini path, `HF_WORKERS=1` serializes hyperframes rendering.
+
 ## Project Structure
 
 - `index.html` — main composition (root timeline)

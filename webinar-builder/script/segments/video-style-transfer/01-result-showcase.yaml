@@ -1,0 +1,20 @@
+id: 01-result-showcase
+title: "Result showcase"
+order: 1
+visual: video-showcase
+
+showcase:
+  videos:
+    - "assets/results/video-style-transfer/showcase-left.mp4"
+    - "assets/results/video-style-transfer/showcase-right.mp4"
+
+caption:
+  eyebrow: "VIDEO STYLE TRANSFER"
+  html: |
+    Drive any look from a
+    <span class="accent">reference clip</span>.
+
+narration: |
+  Here is what you can build with Astria's video style transfer.
+  Two finished clips — both driven by the same reference video,
+  styled with a single prompt each.

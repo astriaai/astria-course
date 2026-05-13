@@ -7,6 +7,8 @@
     "build": "tsx pipeline/build.ts",
     "build:segment": "tsx pipeline/build.ts --segment",
     "build:all": "tsx pipeline/build.ts --all",
+    "build:vst": "tsx pipeline/build.ts --project video-style-transfer --all",
+    "build:vst:segment": "tsx pipeline/build.ts --project video-style-transfer --segment",
     "avatar": "tsx pipeline/generate-avatar.ts",
     "record": "tsx pipeline/record-screencast.ts",
     "login": "tsx scripts/auth/login.ts",
@@ -14,6 +16,7 @@
     "gemini-inspect": "tsx pipeline/gemini-inspect.ts",
     "inspect-webinar-all": "tsx pipeline/inspect-webinar-all.ts",
     "stitch": "tsx pipeline/stitch.ts",
+    "stitch:vst": "tsx pipeline/stitch.ts --project video-style-transfer",
     "preview": "hyperframes preview",
     "render": "hyperframes render",
     "lint": "hyperframes lint"

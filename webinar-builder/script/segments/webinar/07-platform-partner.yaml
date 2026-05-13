@@ -1,0 +1,48 @@
+id: 07-platform-partner
+title: "The platform is the partner"
+order: 7
+# Hybrid: first ~30 s is a local title-card slide rendered by Playwright,
+# then we switch to the Astria UI for the template / Brief / packs demo.
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:22:19-00:30:35"   # SRT entries ~142-188 (brands-need-help, model churn, template delivery, set-of-templates)
+
+screencast:
+  mode: "video"
+  url: "astria.ai/p/zara-yellow-dress → packs"
+  record_script: "scripts/record/07-platform-partner.ts"
+
+# Side caption intentionally omitted: the slide HTML (assets/captures/07-slide)
+# carries the headline + bullets during 0–27 s, and the live demo speaks for
+# itself from 27 s on. Adding a side caption would duplicate the slide content.
+
+narration: |
+  Here's what we've learned working with brands: they need constant
+  help keeping up with AI. Brands are busy with their core business: design, logistics, fashion. 
+  They do not have time to write prompts, and they don't need to.
+
+  That's exactly what we're trying to solve. Six months ago we used Flux LoRA. 
+  Then it was Nano Banana. Today it's Nano Banana 2. In two
+  months it will be Nano Banana 3, Seedance or WAN 2.7.
+  The brand doesn't need to know.
+
+  The brand receives a template. The brand's studio can then
+  upload a simple packshot photo, and get a full lookbook in a
+  single click. The framework was defined for them: the models, the
+  lighting, the framing, and so now they can scale it up and run looks in bulks.
+
+  Sometimes the brand may way to do small customizations. The Brief box allow to specify a customization
+  like "this time she's sitting on an armchair," or "make her pose more dynamic" —
+  and it runs the entire template which keeps results consistent and tell a coherent story.
+
+  Finally, it's important to explain that brands need a set of templates — one for jackets, one for
+  shoes, one for outdoor shots. Each garment type needs different
+  crops, framing and poses. The brand can then pick a template, and upload a bulk of 
+  garments to run the lookbook in a single click.
+
+avatar:
+  emotion: "confident"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

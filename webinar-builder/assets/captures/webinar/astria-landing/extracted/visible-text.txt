@@ -1,0 +1,124 @@
+Cinematic Video
+is now available — prompt for multishot cinematic videos
+WAN 2.7
+is now available — image edit model
+Seedance 2
+is now available — next-gen video model
+Astria
+Templates
+Login
+Fine-tuning API
+Generative imaging customized and personalized
+Developer API
+Try templates
+Train a model
+Open-Source
+AI Headshots starter
+Imagine app
+Use cases
+AI photoshoot
+Virtual try-on
+Mobile apps
+Filters
+Pets
+Product shots
+Upscaling
+Interior design
+AI Photoshoot API
+Create an AI photography service with your own style and unique fingerprint. Provide premium quality images to your audience.
+Corporate headshots
+Fine-tuning manual
+Virtual try-on with Flux
+Use garment reference images
+See more
+Mobile apps
+Create social media applications and give your users the power of embedding themselves in the image.
+Avatars example
+Filters
+Add new generative features to your service while preserving identity and similarity.
+Filters example
+Pets
+Monetize your pet store with AI-generated images of furry friends.
+Dogs
+Cats
+Product shots
+Change the background and match lighting to your product.
+See more
+Upscaling
+Add more detail to your images. Enhance your photographs.
+Tiled upscale docs
+Upscale guide
+Interior design
+Redecorate your room, or move from sketch to reality.
+See more
+Gallery
+Explore gallery
+Grow with us
+Model library
+Use any open model, or import your own as a baseline for your fine-tune.
+Check the model gallery
+Abstract
+Single API call for fine-tuning, batch of predefined prompts, upscaling, face correction and much more.
+Guides
+Stay up to date
+Get updates with the latest models and features.
+Read more
+No devops. Handle peaks
+Unique infrastructure adjusted for fine-tuning with auto-scaling. No queues. Fast processing.
+API overview
+For developers
+Guide
+Learn about fine-tuning
+API Overview
+Get started in minutes
+First API call
+Create your first Flux fine-tune
+FAQ
+What is fine-tuning?
+Fine-tuning is the process of adapting a pre-trained generative image models, like Flux, Stable Diffusion 1.5 (SD1.5) or Stable Diffusion XL (SDXL), to create personalized results for specific subjects or styles. Astria's fine-tuning API allows generating studio-quality images of a subject, including AI-generated professional headshots, as well as cartoons and avatars.
+What are the alternatives to fine-tuning?
+Astria offers a FaceID like / adapter alternative approach alongside the Dreambooth fine-tuning option, which results in lower resemblance but requires significantly less processing time. You can read more about this option in the
+docs
+. This is more suitable for creating lower fidelity results. We provide different types of fine-tuning, such as Checkpoint and LoRAs, utilizing both fine-tuning for SDXL and SD1.5 technologies.
+What is Flux
+Flux is a family of generative image models created by
+Black Forest Labs
+allowing a new level of text to image generation. See more in the
+documentation
+Does Astria cover my app in terms of licensing?
+Yes! Customers may use the playground GUI and API services services without any additional licensing requirements.
+What are generative filters?
+Generative filters use generative image models in order to achieve a new level of control and effects to images. Use Astria's inference API to create a rich variety of artistic filters such as line-art, oil painting effects or unique artistic illustration together with controlnet and fine-tuning while preserving your custom subject as as person identity. Astria's offers advanced options which can help you achieve artistic styles, perfect for enhancing both realistic and more artistic images.
+Trusted by
+Astria
+Tailor-made AI
+Company
+Terms & Conditions
+Content Policy
+Privacy
+Pricing
+Affiliate
+Support
+Resources
+How-To
+Use cases
+Blog
+Articles
+FAQ
+API
+Product
+Photoshop plugin
+Community
+Gallery
+Models
+Docs
+© 2022-2026 Astria
+We use cookies to improve your experience. By continuing to use this site, you consent to our use of cookies. See our
+Privacy Policy
+for details.
+Accept
+Reject
+Draw mask
+Brush
+Clear
+Use mask

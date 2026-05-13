@@ -1,0 +1,29 @@
+id: 09b-brand-research
+title: "Brand research — pan a static composite of bobochoses.com pages"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    No record script for this segment — the visual is a static composite
+    PNG (home + kids product + women's product, concatenated vertically)
+    panned by the screencast-pip layout's auto-pan animation. Headless
+    Chromium can't reliably paint the live bobochoses.com (Cloudflare bot
+    detection / lazy-load), so we pre-capture once via
+    scripts/capture-bobo-pages.ts and run ImageMagick:
+
+      magick home.png kids.png women.png -append composite.png
+
+    The composite is 1600 × 12152; the layout's auto-pan tweens from y=0
+    to y = naturalHeight − viewportHeight over (duration − 3) s.
+
+src: "assets/captures/bobo-pages/composite.png"
+viewport: "1600x900"
+duration_s: 80
+
+narration: |
+  (See script/segments/09b-brand-research.yaml for canonical narration.)
+
+# No beats — the entire segment is a single linear pan over the
+# composite image. Bullet reveals on the right column anchor the
+# narration moments instead.

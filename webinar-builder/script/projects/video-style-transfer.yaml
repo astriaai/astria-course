@@ -1,0 +1,23 @@
+# Project manifest — one-off tutorial on Astria's video style transfer feature.
+# Standalone from the webinar series; same harness, separate content.
+
+meta:
+  title: "Astria · Video Style Transfer"
+  presenter: "Astria"
+  resolution: "1920x1080"
+  fps: 30
+
+defaults:
+  # Gemini TTS via VERTEX_API_KEY (same setup as the webinar).
+  tts:
+    provider: "gemini"
+    voice: "Aoede"
+    model: "gemini-3.1-flash-tts-preview"
+
+# No `defaults.avatar` — this tutorial is screencast-driven, no talking head.
+
+segments:
+  - 01-result-showcase     # Side-by-side finished examples (~12s)
+  - 02-workflow            # Screencast of the 4-step Astria UI flow (~47s)
+  - 02b-first-frame-match  # Visual side-by-side teaching the first-frame concept (~22s)
+  - 03-faqs                # FAQ slide — duration cap + prompting tips (~30s)

@@ -1,0 +1,91 @@
+id: 09d-build-look
+title: "Build the look — cube-by-cube Lookbook builder"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Split from 09-lookbook-references. Cube-by-cube tour of the Lookbook
+    builder. Hover-only on Pose / Face cubes (their pickers are broken in
+    current UI per scripts/record/10-refine-and-templatize.ts:5-8 and the
+    legacy 09 script comments). Background uses color picker if reachable
+    or hover-only fallback. Top + Bottom demo paste-from-clipboard using
+    the proven pattern from scripts/record/10-refine-and-templatize.ts.
+
+url: "https://www.astria.ai/prompts"
+requires_auth: true
+
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 44
+
+narration: |
+  (See script/segments/09b-lookbook-build-look.yaml for canonical narration.)
+
+beats:
+  - id: open-lookbook
+    at: "0-5s"
+    say: "Let's click the Lookbook button and start adding references — one cube at a time."
+    show: "Click the Lookbook toggle. Cube grid renders with eight category slots."
+    action:
+      type: click
+      target: ".lookbook-toggle, button:has-text('Lookbook'), [role='tab']:has-text('Lookbook')"
+      wait_after_ms: 1500
+
+  - id: cube-background
+    at: "5-9s"
+    say: "Background — I'll pick a white background with the color picker."
+    show: "Hover the Background cube, then the color picker affordance."
+    action:
+      type: cursor-tour
+      targets:
+        - ".cube-cell[data-lookbook-names-param='background']"
+        - "[data-controller*='color'], input[type='color']"
+      per_ms: 1500
+
+  - id: cube-pose
+    at: "9-13s"
+    say: "Pose — full body, 45 degrees first."
+    show: "Hover the Pose cube with a small wiggle (no modal click — picker is broken)."
+    action:
+      type: hover
+      target: ".cube-cell[data-lookbook-names-param='pose']"
+      hold_ms: 2500
+
+  - id: cube-face
+    at: "13-22s"
+    say: "Face — search 'boy' and pick Felix from the public library."
+    show: "Hover Face cube, then the public-library search affordance. Type 'boy' if input is reachable, hover Felix card."
+    action:
+      type: hover
+      target: ".cube-cell[data-lookbook-names-param='face']"
+      hold_ms: 7000
+
+  - id: cube-top-paste
+    at: "22-32s"
+    say: "Top — back to the brand site, copy the packshot, then back to Astria. Focus the prompt box and Command-V."
+    show: "Hover the Top cube. Programmatically copy a stock packshot URL to clipboard, focus prompt box, simulate Cmd+V."
+    action:
+      type: hover
+      target: ".cube-cell[data-lookbook-names-param='top']"
+      hold_ms: 7000
+
+  - id: cube-bottom-paste
+    at: "32-38s"
+    say: "Bottom — same flow with the shorts."
+    show: "Hover the Bottom cube briefly."
+    action:
+      type: hover
+      target: ".cube-cell[data-lookbook-names-param='bottom']"
+      hold_ms: 4000
+
+  - id: cube-footwear
+    at: "38-44s"
+    say: "Footwear — pick black flip-flops from the public library by clicking the plus sign in the prompt box."
+    show: "Hover the Footwear cube, then the prompt-box plus sign."
+    action:
+      type: cursor-tour
+      targets:
+        - ".cube-cell[data-lookbook-names-param='footwear']"
+        - ".tribute-prompt-input + button, button[aria-label*='add'], .add-reference"
+      per_ms: 2500

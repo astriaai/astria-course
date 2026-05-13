@@ -1,0 +1,51 @@
+id: 03-traditional-photoshoot
+title: "Traditional photoshoot"
+order: 3
+visual: presenter-slide
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:12:59-00:13:30"   # SRT entries 35–42
+
+slide:
+  eyebrow: "SECTION 03"
+  title_html: |
+    Traditional
+    <span class="accent">photoshoot</span>?
+  bullets:
+    - "Model,"
+    - "Locations"
+    - "Stock Logistics"
+    - "Stylists"
+    - "Makeup"
+    - "Hair"
+  # Timings aligned to TTS via transcript.json (whisper small.en).
+  # Rapid-fire to match the narration rhythm:
+  # "coordinating models, locations, shipping inventory …
+  #  stylists, makeup, hair."
+  #   1 Model,            "models"     @12.32
+  #   2 Locations         "locations"  @12.77
+  #   3 Stock Logistics   "shipping"   @13.77
+  #   4 Stylists          "stylists"   @18.84
+  #   5 Makeup            "makeup"     @20.11
+  #   6 Hair              "hair"       @20.46
+  bullet_starts: [12.2, 12.6, 13.6, 18.7, 20.0, 20.3]
+
+# Narration source: extracted from transcript_en.srt entries ~34–42
+# (00:12:55 → 00:13:30). Lightly re-punctuated for TTS readability.
+narration: |
+  Let's start by reviewing how do these currently work pre-AI?
+  What does does traditional photoshoot look like?
+  Usually this would involve logistics such as
+  coordinating models, locations, shipping inventory, making sure product arrives from production to the studio on time.
+  
+  Stylists, makeup, hair — all of this logistics exists, ultimately, to serve the brand's DNA.
+  The entire photoshoot is there to convey the brand's identity,
+  and we need to somehow implement and communicate that. Now let's see how we can do that with AI.
+
+avatar:
+  emotion: "friendly"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"
+  # engine defaults to "omnihuman" — override per segment with "infinitetalk" or "pruna"
+  # ("pruna" = Replicate prunaai/p-video-avatar, needs REPLICATE_API_TOKEN; 720p or 1080p)

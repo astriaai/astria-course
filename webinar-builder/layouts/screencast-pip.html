@@ -85,6 +85,20 @@
         background: #0B0B0C;
         display: block;
       }
+      /* Multi-page mode default: fit the image fully in the viewport.
+         Individual lookbook screenshots (1500×2000) should show whole; only
+         tall composites that need to scroll opt in via data-scroll="1". */
+      .browser-viewport img.seg-screenshot-page {
+        object-fit: contain;
+      }
+      /* Scroll mode (single composite #seg-screenshot or per-page opt-in):
+         fill viewport WIDTH and overflow vertically so GSAP can pan through. */
+      .browser-viewport img#seg-screenshot,
+      .browser-viewport img.seg-screenshot-page[data-scroll="1"] {
+        width: 100%;
+        height: auto;
+        object-fit: unset;
+      }
 
       /* Right column (x≈1480→1920, minus 40 px gutters):
          — top: caption (eyebrow + headline)
@@ -214,7 +228,7 @@
           <div class="browser-dot red"></div>
           <div class="browser-dot yellow"></div>
           <div class="browser-dot green"></div>
-          <div class="browser-url"><span class="lock">🔒</span>{{BROWSER_URL}}</div>
+          <div class="browser-url"><span class="lock">🔒</span><span id="browser-url-text">{{BROWSER_URL}}</span></div>
         </div>
         <div class="browser-viewport">
           {{SCREENCAST_MEDIA}}
@@ -277,12 +291,64 @@
       }
 
       // For image-backed demos we pan; for video-backed demos the recording handles motion.
-      if (document.getElementById("seg-screenshot")) {
-        tl.to("#seg-screenshot", {
-          y: -2400,
-          duration: Math.max(duration - 3, 4),
-          ease: "none"
-        }, 1.6);
+      // Single-page mode (#seg-screenshot): pan one image; defaults to
+      // max(2400, renderedHeight − viewportHeight) over duration − 3 s.
+      // Multi-page mode (.seg-screenshot-page): each image has data-start /
+      // data-duration controlling visibility, plus optional per-page pan
+      // overrides. We tween each page within its own window so the
+      // narration can walk through several screens.
+      const panSingle = (img) => {
+        const viewport = img.closest(".browser-viewport");
+        const overrideSeconds = parseFloat(img.dataset.panSeconds ?? "");
+        const overrideDistance = parseFloat(img.dataset.panDistance ?? "");
+        const computePan = () => {
+          const visibleH = viewport ? viewport.clientHeight : 900;
+          const renderedH = img.offsetHeight || img.naturalHeight || 0;
+          return Math.max(2400, renderedH - visibleH);
+        };
+        const dist = Number.isFinite(overrideDistance) ? overrideDistance : computePan();
+        const secs = Number.isFinite(overrideSeconds) ? overrideSeconds : Math.max(duration - 3, 4);
+        return { dist, secs };
+      };
+
+      const singleImg = document.getElementById("seg-screenshot");
+      if (singleImg) {
+        const tween = () => {
+          const { dist, secs } = panSingle(singleImg);
+          tl.to(singleImg, { y: -dist, duration: secs, ease: "none" }, 1.6);
+        };
+        if (singleImg.complete && singleImg.offsetHeight) tween();
+        else singleImg.addEventListener("load", tween, { once: true });
+      }
+
+      const pages = document.querySelectorAll(".seg-screenshot-page");
+      if (pages.length) {
+        const urlText = document.getElementById("browser-url-text");
+        pages.forEach((img) => {
+          const start = parseFloat(img.dataset.start ?? "0");
+          const dur = parseFloat(img.dataset.duration ?? "0");
+          const pageUrl = img.dataset.url ?? "";
+          // Default pan: 70% of the page window, distance = renderedHeight − viewportHeight.
+          const overrideSeconds = parseFloat(img.dataset.panSeconds ?? "");
+          const overrideDistance = parseFloat(img.dataset.panDistance ?? "");
+          const tween = () => {
+            const viewport = img.closest(".browser-viewport");
+            const visibleH = viewport ? viewport.clientHeight : 900;
+            const renderedH = img.offsetHeight || img.naturalHeight || 0;
+            const computed = Math.max(0, renderedH - visibleH);
+            const dist = Number.isFinite(overrideDistance) ? overrideDistance : computed;
+            const secs = Number.isFinite(overrideSeconds) ? overrideSeconds : Math.max(dur - 1.5, 1);
+            // Reset y at page start so the pan begins from the top each time.
+            tl.set(img, { y: 0 }, start);
+            tl.to(img, { y: -dist, duration: secs, ease: "none" }, start + 0.4);
+            // Swap the URL bar text when this page becomes active.
+            if (urlText && pageUrl) {
+              tl.call(() => { urlText.textContent = pageUrl; }, [], start);
+            }
+          };
+          if (img.complete && img.offsetHeight) tween();
+          else img.addEventListener("load", tween, { once: true });
+        });
       }
 
       // Simulated cursor animation — only relevant for image-backed demos.

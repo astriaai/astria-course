@@ -1,0 +1,57 @@
+id: 09a-open-workspace
+title: "Open a Workspace for the brand"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Trim of the original 09a segment to JUST the workspace creation step.
+    Brand research (bobochoses tour) is now 09b-brand-research, which uses
+    static full-page screenshots panned by the screencast-pip layout —
+    Cloudflare bot detection makes the live bobochoses.com unreliable in
+    headless Chromium.
+
+url: "https://www.astria.ai/prompts"
+requires_auth: true
+
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 12
+
+narration: |
+  (See script/segments/09a-open-workspace.yaml for canonical narration.)
+
+beats:
+  - id: workspace-selector
+    at: "0-3s"
+    say: "Let's start by opening a new workspace."
+    show: "Astria /prompts top-nav. Cursor moves to the Workspace selector next to the logo."
+    action:
+      type: hover
+      target: "[data-controller*='workspace'] button, .workspace-selector, header a:has-text('Workspace')"
+      hold_ms: 1500
+
+  - id: open-dropdown
+    at: "3-5s"
+    say: "Click the Workspace selector next to the logo."
+    show: "Click the selector; the dropdown opens."
+    action:
+      type: click
+      target: "[data-controller*='workspace'] button, .workspace-selector"
+
+  - id: new-workspace
+    at: "5-7s"
+    say: "pick New workspace"
+    show: "Click the 'New workspace' option in the dropdown."
+    action:
+      type: click
+      target: "text=/New\\s+workspace/i"
+
+  - id: type-name
+    at: "7-12s"
+    say: "name it after the brand you're working with — I'll name mine Bobo Choses."
+    show: "Click the name field, type 'Bobo Choses'."
+    action:
+      type: type
+      target: "input[type='text'], input[name*='name']"
+      text: "Bobo Choses"

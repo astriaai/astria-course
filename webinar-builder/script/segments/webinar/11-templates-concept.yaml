@@ -1,0 +1,53 @@
+id: 11-templates-concept
+title: "Deliver the template — the brand runs at scale"
+order: 11
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "01:12:42-01:15:00"   # SRT entries ~600–625
+
+screencast:
+  mode: "video"
+  url: "astria.ai/w/zara"           # shown in the fake browser chrome
+  record_script: "scripts/record/11-templates-concept.ts"
+
+caption:
+  eyebrow: "METHOD · 11"
+  html: |
+    Deliver the
+    <span class="accent">template</span>.
+
+slide:
+  # Reused by the screencast-pip layout when bullets are present — they
+  # appear in the right column under the caption.
+  bullets:
+    - "Lock the look → save as a Template"
+    - "Template remembers model, background, lighting, angles"
+    - "Deliver it: a brand workspace, not a folder of images"
+    - "Brand swaps the garment; everything else stays"
+    - "100 shirts × 4 models, one Generate click"
+
+narration: |
+  Once a look is working — the model, the background, the lighting,
+  the framing — we stop iterating and lock it in. Open the hamburger
+  on a generation, click Template, and save a New Template. From that
+  point, no matter what garment you drop in, it will keep the model,
+  the background, and the lighting you originally defined.
+
+  This template is what we deliver to the brand. It's not a folder of
+  images; it's a recipe. The brand opens My Templates, picks the one
+  we built for them, swaps in a new garment — and everything else stays
+  consistent: the same angle, the same model, the same scene.
+
+  The template itself holds a collection of prompts — front, side, back,
+  detail. That's what makes this scale. A brand gets a hundred shirts
+  from the manufacturer; they select thirty at once, click Generate,
+  and the template runs them across four models in the same angles
+  and the same look. That's the end of the workflow: we build the
+  template, the brand runs the lookbook.
+
+avatar:
+  emotion: "confident"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

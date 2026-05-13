@@ -1,8 +1,13 @@
 /**
  * Orchestrator — ensures assets are fresh for requested segments, then renders.
  *
- *   tsx pipeline/build.ts --segment 03-traditional-photoshoot
- *   tsx pipeline/build.ts --all
+ *   tsx pipeline/build.ts --segment 03-traditional-photoshoot          (default project: webinar)
+ *   tsx pipeline/build.ts --project video-style-transfer --all
+ *   tsx pipeline/build.ts --project video-style-transfer --segment 02-workflow
+ *
+ * Projects are addressed by name. The project manifest lives at
+ * `script/projects/<name>.yaml`; per-project assets and outputs are namespaced
+ * under `<dir>/<project>/` (segments, audio, avatars, captures, out).
  *
  * Tier precedence (picked from env vars + segment config):
  *
@@ -56,7 +61,15 @@ interface SegmentYaml {
   id: string;
   title: string;
   narration: string;
-  visual: "presenter-slide" | "screencast-pip" | "avatar-hero";
+  visual: "presenter-slide" | "screencast-pip" | "avatar-hero" | "video-showcase";
+  showcase?: {
+    // Side-by-side or stacked result videos. Used by the video-showcase
+    // visual for one-off tutorial intros that lead with finished examples.
+    // Each entry may be a plain path or {src, label} — label renders above
+    // the pane (e.g. "DRIVING VIDEO" / "GENERATED RESULT").
+    videos: Array<string | { src: string; label?: string }>;
+    autoplay?: boolean;
+  };
   slide?: {
     eyebrow?: string;
     title_html?: string;
@@ -70,10 +83,26 @@ interface SegmentYaml {
   };
   screencast?: {
     mode?: "video" | "image";
-    src?: string;                // image path (for mode=image)
+    src?: string;                // image path (for mode=image, single page)
     url?: string;                // browser URL bar text
-    record_script?: string;      // path to scripts/record/<id>.ts (for mode=video)
+    record_script?: string;      // path to scripts/record/<project>/<id>.ts (for mode=video; metadata only)
     fallback_image?: string;     // used if the recording fails
+    // Pan tween (mode=image, single page only). When set, the layout uses
+    // these values instead of computing pan from image height.
+    pan_seconds?: number;        // pan duration in seconds (default: duration-3)
+    pan_distance?: number;       // pixels to translate up (default: max(2400, renderedHeight - viewportHeight))
+    // Multi-page mode: stack several images with timed visibility, each
+    // with its own partial pan. Use `pages` instead of `src` when the
+    // narration walks through several screens. Pages are rendered as
+    // sibling .clip elements; only the active one is visible at any time.
+    pages?: Array<{
+      src: string;               // image path (e.g. assets/captures/foo.png)
+      start: number;             // seconds from segment start
+      duration: number;          // seconds the page stays visible
+      pan_seconds?: number;      // pan duration within the page window
+      pan_distance?: number;     // pixels to translate up within the page window
+      url?: string;              // browser URL bar text while this page is visible
+    }>;
   };
   caption?: {
     eyebrow?: string;
@@ -87,20 +116,35 @@ interface SegmentYaml {
       | "omnihuman-1.5"
       | "omnihuman-1.5-byteplus"
       | "infinitetalk"
+      | "infinitetalk-fast"
       | "pruna";
     resolution?: "480p" | "720p" | "1080p";
+    // Pruna only — directs micro-motions, expressions, gestures.
+    // Ignored by OmniHuman/InfiniteTalk (they take no prompt).
+    video_prompt?: string;
   };
 }
-interface WebinarYaml {
+interface ProjectYaml {
   segments: string[];
   defaults?: {
     tts?: { provider?: "inworld" | "gemini" };
+    avatar?: { video_prompt?: string };
   };
 }
 
-const loadWebinar = () => yaml.load(readFileSync(join(ROOT, "script", "webinar.yaml"), "utf-8")) as WebinarYaml;
-const loadSegment = (id: string) =>
-  yaml.load(readFileSync(join(ROOT, "script", "segments", `${id}.yaml`), "utf-8")) as SegmentYaml;
+function parseProject(): string {
+  const idx = process.argv.indexOf("--project");
+  return idx !== -1 ? process.argv[idx + 1] : "webinar";
+}
+
+const loadProject = (project: string) =>
+  yaml.load(
+    readFileSync(join(ROOT, "script", "projects", `${project}.yaml`), "utf-8"),
+  ) as ProjectYaml;
+const loadSegment = (project: string, id: string) =>
+  yaml.load(
+    readFileSync(join(ROOT, "script", "segments", project, `${id}.yaml`), "utf-8"),
+  ) as SegmentYaml;
 
 function run(cmd: string, args: string[], cwd = ROOT) {
   const r = spawnSync(cmd, args, { cwd, stdio: "inherit" });
@@ -190,12 +234,12 @@ function sanitizeForSay(text: string) {
   return text.replace(/[—–]/g, " - ").replace(/["']/g, "").replace(/\s+/g, " ").trim();
 }
 
-function ensureSayNarration(segmentId: string, narration: string) {
-  const audioDir = join(ROOT, "assets", "audio");
+function ensureSayNarration(project: string, segmentId: string, narration: string) {
+  const audioDir = join(ROOT, "assets", "audio", project);
   mkdirSync(audioDir, { recursive: true });
   const aiff = join(audioDir, `${segmentId}.aiff`);
   const mp3 = join(audioDir, `${segmentId}.mp3`);
-  const segFile = join(ROOT, "script", "segments", `${segmentId}.yaml`);
+  const segFile = join(ROOT, "script", "segments", project, `${segmentId}.yaml`);
   const stale = !existsSync(mp3) || statSync(segFile).mtimeMs > statSync(mp3).mtimeMs;
   if (!stale) {
     console.log(`[say] ${segmentId}: narration cached`);
@@ -207,18 +251,18 @@ function ensureSayNarration(segmentId: string, narration: string) {
   return mp3;
 }
 
-function pickScreencastMedia(segment: SegmentYaml): string | undefined {
+function pickScreencastMedia(project: string, segment: SegmentYaml): string | undefined {
   const s = segment.screencast;
   if (!s) return undefined;
-  const recordedMp4 = join("assets", "captures", `${segment.id}.mp4`);
+  const recordedMp4 = join("assets", "captures", project, `${segment.id}.mp4`);
   const absMp4 = join(ROOT, recordedMp4);
   if (s.mode === "video" && existsSync(absMp4)) return recordedMp4;
   return s.src ?? s.fallback_image;
 }
 
-function avatarMediaHtml(segmentId: string, hasAvatar: boolean) {
+function avatarMediaHtml(project: string, segmentId: string, hasAvatar: boolean) {
   if (hasAvatar) {
-    return `<video muted playsinline src="assets/avatars/${segmentId}.mp4" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`;
+    return `<video muted playsinline src="assets/avatars/${project}/${segmentId}.mp4" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`;
   }
   return `<div class="avatar-placeholder">
           <div class="avatar-ring"></div>
@@ -226,7 +270,7 @@ function avatarMediaHtml(segmentId: string, hasAvatar: boolean) {
         </div>`;
 }
 
-function renderLayout(segment: SegmentYaml, hasAvatar: boolean, audioSrc: string, durationSec: number): string {
+function renderLayout(project: string, segment: SegmentYaml, hasAvatar: boolean, audioSrc: string, durationSec: number): string {
   const layoutPath = join(ROOT, "layouts", `${segment.visual}.html`);
   let html = readFileSync(layoutPath, "utf-8");
 
@@ -246,7 +290,7 @@ function renderLayout(segment: SegmentYaml, hasAvatar: boolean, audioSrc: string
   const vars: Record<string, string> = {
     DURATION: durationSec.toFixed(2),
     AUDIO_SRC: audioSrc,
-    AVATAR_MEDIA: avatarMediaHtml(segment.id, hasAvatar),
+    AVATAR_MEDIA: avatarMediaHtml(project, segment.id, hasAvatar),
     CAPTIONS_CSS: captionsCss,
     CAPTIONS_HTML: captionsHtml,
     CAPTIONS_GSAP: captionsGsap,
@@ -290,12 +334,59 @@ function renderLayout(segment: SegmentYaml, hasAvatar: boolean, audioSrc: string
     vars.SLIDE_BODY_HTML = body;
     // Automatic density: 6+ bullets (total across columns) trigger compact typography.
     vars.SLIDE_FRAME_CLASS = totalBullets >= 6 ? "dense" : "";
+  } else if (segment.visual === "video-showcase") {
+    const videos = segment.showcase?.videos ?? [];
+    if (videos.length === 0) {
+      throw new Error(`segment ${segment.id}: video-showcase requires showcase.videos[]`);
+    }
+    vars.SHOWCASE_VIDEOS_HTML = videos
+      .map((entry, i) => {
+        const src = typeof entry === "string" ? entry : entry.src;
+        const label = typeof entry === "string" ? undefined : entry.label;
+        const labelHtml = label
+          ? `<div class="showcase-label">${label}</div>`
+          : "";
+        return (
+          `<div class="showcase-pane clip" data-start="0" data-duration="${durationSec.toFixed(
+            2,
+          )}" data-track-index="${1 + i}">\n` +
+          `          ${labelHtml}\n` +
+          `          <video class="showcase-video" id="showcase-video-${i}" data-volume="0" muted playsinline autoplay loop src="${src}"></video>\n` +
+          `        </div>`
+        );
+      })
+      .join("\n        ");
+    vars.CAPTION_EYEBROW = segment.caption?.eyebrow ?? "";
+    vars.CAPTION_HTML = segment.caption?.html ?? "";
+    // No avatar / no PIP variant for this layout.
+    vars.AVATAR_MEDIA = "";
   } else if (segment.visual === "screencast-pip") {
-    const screencastMediaPath = pickScreencastMedia(segment);
+    const screencastMediaPath = pickScreencastMedia(project, segment);
     if (screencastMediaPath?.endsWith(".mp4")) {
       vars.SCREENCAST_MEDIA = `<video id="seg-screencast" muted playsinline autoplay src="${screencastMediaPath}"></video>`;
+    } else if (segment.screencast?.pages && segment.screencast.pages.length > 0) {
+      // Multi-page: each page is a .clip <img> with timed visibility, plus
+      // optional per-page pan attributes the layout reads on activation.
+      vars.SCREENCAST_MEDIA = segment.screencast.pages
+        .map((p, i) => {
+          const panAttrs =
+            (p.pan_seconds !== undefined ? ` data-pan-seconds="${p.pan_seconds}"` : "") +
+            (p.pan_distance !== undefined ? ` data-pan-distance="${p.pan_distance}"` : "");
+          const urlAttr = p.url ? ` data-url="${p.url.replace(/"/g, "&quot;")}"` : "";
+          // Page opts into scroll mode (overflow + GSAP pan) when pan_distance
+          // is set and > 0. Default is object-fit:contain — for individual
+          // product photos that should fit the viewport without cropping.
+          const scrollAttr = (p.pan_distance ?? 0) > 0 ? ` data-scroll="1"` : "";
+          return `<img class="clip seg-screenshot-page" id="seg-screenshot-${i}" src="${p.src}" alt="" data-start="${p.start}" data-duration="${p.duration}" data-track-index="${10 + i}"${panAttrs}${urlAttr}${scrollAttr} />`;
+        })
+        .join("\n          ");
     } else {
-      vars.SCREENCAST_MEDIA = `<img id="seg-screenshot" src="${screencastMediaPath ?? ""}" alt="" />`;
+      const panSec = segment.screencast?.pan_seconds;
+      const panDist = segment.screencast?.pan_distance;
+      const panAttrs =
+        (panSec !== undefined ? ` data-pan-seconds="${panSec}"` : "") +
+        (panDist !== undefined ? ` data-pan-distance="${panDist}"` : "");
+      vars.SCREENCAST_MEDIA = `<img id="seg-screenshot" src="${screencastMediaPath ?? ""}" alt=""${panAttrs} />`;
     }
     vars.BROWSER_URL = segment.screencast?.url ?? "astria.ai";
     vars.CAPTION_EYEBROW = segment.caption?.eyebrow ?? "";
@@ -342,8 +433,8 @@ function renderLayout(segment: SegmentYaml, hasAvatar: boolean, audioSrc: string
 
 let anySegmentHasAvatarMp4 = false;
 
-async function buildOne(segmentId: string) {
-  const segment = loadSegment(segmentId);
+async function buildOne(project: string, segmentId: string) {
+  const segment = loadSegment(project, segmentId);
   const draftMode = process.env.DRAFT === "1";
   const hasWave = !draftMode && Boolean(process.env.WAVESPEED_API_KEY);
   const hasHeygen = !draftMode && Boolean(process.env.HEYGEN_API_KEY);
@@ -351,10 +442,10 @@ async function buildOne(segmentId: string) {
   const noAvatar = process.env.NO_AVATAR === "1";
   const imageUrl = noAvatar ? undefined : segment.avatar?.image_url;
 
-  // Provider selection: TTS_PROVIDER env > webinar.yaml defaults.tts.provider > auto.
+  // Provider selection: TTS_PROVIDER env > project.yaml defaults.tts.provider > auto.
   // Gemini TTS has no hosted URL, so it skips OmniHuman/InfiniteTalk entirely.
-  const webinarCfg = loadWebinar() as WebinarYaml;
-  const providerPref = (process.env.TTS_PROVIDER ?? webinarCfg.defaults?.tts?.provider) as
+  const projectCfg = loadProject(project);
+  const providerPref = (process.env.TTS_PROVIDER ?? projectCfg.defaults?.tts?.provider) as
     | "inworld"
     | "gemini"
     | undefined;
@@ -363,7 +454,14 @@ async function buildOne(segmentId: string) {
   const engine = segment.avatar?.engine ?? "omnihuman";
   // Default resolution depends on engine: Pruna only supports 720p/1080p,
   // OmniHuman/InfiniteTalk start at 480p.
-  const resolution = segment.avatar?.resolution ?? (engine === "pruna" ? "720p" : "480p");
+  // Engine-specific resolution defaults:
+  //   pruna             — only supports 720p / 1080p
+  //   infinitetalk      — 720p (regular variant honors the resolution param)
+  //   infinitetalk-fast — locked at 480p server-side (param ignored)
+  //   omnihuman*        — 480p (cheaper; 1.5-byteplus upscales to 1440 internally)
+  const resolution =
+    segment.avatar?.resolution ??
+    (engine === "pruna" || engine === "infinitetalk" ? "720p" : "480p");
   const hasReplicate =
     !draftMode &&
     Boolean(process.env.REPLICATE_API_KEY ?? process.env.REPLICATE_API_TOKEN);
@@ -409,52 +507,66 @@ async function buildOne(segmentId: string) {
   if (draftMode) {
     // No paid APIs: silent audio sized from narration word count.
     const duration = draftDurationSec(segment.narration);
-    audioMp3 = ensureSilentNarration(ROOT, segmentId, duration);
+    const draftAudioDir = join(ROOT, "assets", "audio", project);
+    mkdirSync(draftAudioDir, { recursive: true });
+    audioMp3 = ensureSilentNarration(ROOT, join(project, segmentId), duration);
     console.log(`[draft] ${segmentId}: silent audio ${duration.toFixed(1)}s`);
   } else if (useGemini) {
-    const g = await generateGeminiAudio(segmentId);
+    const g = await generateGeminiAudio(project, segmentId);
     audioMp3 = g.localPath;
     // Gemini TTS does not produce a hosted URL — avatar lipsync path is skipped.
   } else if (hasWave) {
-    const inw = await generateInworldAudio(segmentId);
+    const inw = await generateInworldAudio(project, segmentId);
     audioMp3 = inw.localPath;
     audioUrl = inw.url;
   } else if (hasHeygen) {
-    audioMp3 = join(ROOT, "assets", "audio", `${segmentId}.mp3`);
+    audioMp3 = join(ROOT, "assets", "audio", project, `${segmentId}.mp3`);
   } else {
-    audioMp3 = ensureSayNarration(segmentId, segment.narration);
+    audioMp3 = ensureSayNarration(project, segmentId, segment.narration);
   }
 
   if (usePruna && imageUrl) {
     // Pruna takes the local audio file directly — no hosted URL required.
+    // video_prompt: segment-level overrides project-level default.
+    const videoPrompt =
+      segment.avatar?.video_prompt ?? projectCfg.defaults?.avatar?.video_prompt;
     avatarMp4 = await generatePruna(
+      project,
       segmentId,
       audioMp3,
       imageUrl,
-      resolution as "720p" | "1080p"
+      resolution as "720p" | "1080p",
+      videoPrompt
     );
   } else if (useByteplus && imageUrl) {
     // BytePlus OmniHuman 1.5 — direct call, audio inlined as base64.
-    avatarMp4 = await generateOmniHumanByteplus(segmentId, audioMp3, imageUrl);
+    avatarMp4 = await generateOmniHumanByteplus(project, segmentId, audioMp3, imageUrl);
   } else if (useWaveAvatar && imageUrl) {
     // OmniHuman/InfiniteTalk accept either a URL or a base64 data URI.
     // When TTS gave us a hosted URL (Inworld path) prefer that; otherwise
     // inline the local mp3 so the Gemini-default flow still works.
     const audioInput = audioUrl ?? mp3FileToDataUri(audioMp3);
-    if (engine === "infinitetalk") {
+    if (engine === "infinitetalk" || engine === "infinitetalk-fast") {
+      // Reuse the same avatar.video_prompt knob Pruna already uses so authors
+      // have a single place to steer micro-motion regardless of engine.
+      const motionPrompt =
+        segment.avatar?.video_prompt ?? projectCfg.defaults?.avatar?.video_prompt ?? "";
       avatarMp4 = await generateInfiniteTalk(
+        project,
         segmentId,
         audioInput,
         imageUrl,
-        resolution as "480p" | "720p"
+        resolution as "480p" | "720p",
+        engine === "infinitetalk-fast" ? "fast" : "regular",
+        motionPrompt,
       );
     } else if (engine === "omnihuman-1.5") {
-      avatarMp4 = await generateOmniHuman(segmentId, audioInput, imageUrl, "v1.5");
+      avatarMp4 = await generateOmniHuman(project, segmentId, audioInput, imageUrl, "v1.5");
     } else {
-      avatarMp4 = await generateOmniHuman(segmentId, audioInput, imageUrl, "v1");
+      avatarMp4 = await generateOmniHuman(project, segmentId, audioInput, imageUrl, "v1");
     }
   } else if (tier === "heygen") {
-    avatarMp4 = await generateAvatar(segmentId);
+    avatarMp4 = await generateAvatar(project, segmentId);
     run("ffmpeg", ["-y", "-i", avatarMp4, "-vn", "-acodec", "libmp3lame", "-q:a", "2", audioMp3]);
   }
 
@@ -464,24 +576,25 @@ async function buildOne(segmentId: string) {
   // Screencast recording: only for screencast-pip segments with mode=video.
   // Skipped when the mp4 already exists (cheap iteration) unless --rerecord is passed.
   if (segment.visual === "screencast-pip" && segment.screencast?.mode === "video") {
-    const mp4 = join(ROOT, "assets", "captures", `${segmentId}.mp4`);
+    const mp4 = join(ROOT, "assets", "captures", project, `${segmentId}.mp4`);
     const rerecord = process.argv.includes("--rerecord");
     if (!existsSync(mp4) || rerecord) {
-      await recordScreencast(segmentId);
+      await recordScreencast(project, segmentId);
     } else {
       console.log(`[record] ${segmentId}: using cached ${mp4} (pass --rerecord to refresh)`);
     }
   }
 
-  const audioSrc = `assets/audio/${segmentId}.mp3`;
-  const workDir = renderLayout(segment, Boolean(avatarMp4), audioSrc, safeDuration);
+  const audioSrc = `assets/audio/${project}/${segmentId}.mp3`;
+  const workDir = renderLayout(project, segment, Boolean(avatarMp4), audioSrc, safeDuration);
   if (avatarMp4) anySegmentHasAvatarMp4 = true;
   console.log(`[build] ${segmentId}: visual=${segment.visual} duration=${safeDuration.toFixed(2)}s`);
 
   // Render this segment's composition from its own work dir so parallel
   // builds don't race on index.html.
-  const output = join("out", `${segmentId}.mp4`);
-  mkdirSync(join(ROOT, "out"), { recursive: true });
+  const outputDir = join(ROOT, "out", project);
+  mkdirSync(outputDir, { recursive: true });
+  const output = join("out", project, `${segmentId}.mp4`);
   const workers = process.env.HF_WORKERS ?? (avatarMp4 ? "2" : "4");
   console.log(`[build] ${segmentId}: rendering → ${output} (workers=${workers})`);
   // Pin to 0.4.9 — newer hyperframes (0.4.45+) bumped sharp to 0.34.5, which
@@ -498,19 +611,24 @@ async function buildOne(segmentId: string) {
 }
 
 async function main() {
+  const project = parseProject();
   const idx = process.argv.indexOf("--segment");
   const all = process.argv.includes("--all");
   if (idx === -1 && !all) {
-    console.error("Usage: tsx pipeline/build.ts --segment <id> | --all [--parallel N]");
+    console.error(
+      "Usage: tsx pipeline/build.ts [--project <name>] --segment <id> | --all [--parallel N]",
+    );
     process.exit(1);
   }
 
-  const targets = all ? loadWebinar().segments : [process.argv[idx + 1]];
+  const targets = all ? loadProject(project).segments : [process.argv[idx + 1]];
   const parallelIdx = process.argv.indexOf("--parallel");
   const parallel = parallelIdx !== -1 ? Math.max(1, parseInt(process.argv[parallelIdx + 1] ?? "1", 10)) : 1;
 
+  console.log(`[build] project=${project} targets=${targets.length} parallel=${parallel}`);
+
   if (parallel === 1) {
-    for (const id of targets) await buildOne(id);
+    for (const id of targets) await buildOne(project, id);
   } else {
     // Simple fixed-width worker pool. Each buildOne renders from its own
     // .work/<id>/ dir so concurrent builds don't race on index.html.
@@ -520,7 +638,7 @@ async function main() {
       while (queue.length) {
         const id = queue.shift()!;
         try {
-          await buildOne(id);
+          await buildOne(project, id);
         } catch (err) {
           errors.push({ id, err });
         }
@@ -537,7 +655,7 @@ async function main() {
     }
   }
 
-  console.log(`\n[build] all done → ${targets.length} mp4(s) in out/`);
+  console.log(`\n[build] all done → ${targets.length} mp4(s) in out/${project}/`);
 }
 
 main().catch((e) => {

@@ -1,0 +1,128 @@
+id: 11-templates-concept
+title: "Deliver the template — the brand runs at scale"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "01:12:42-01:15:00"   # SRT entries 600–625
+  note: |
+    Live DOM verified on astria.ai 2026-04-20. Since the 2024 recording, the
+    "Pack" terminology has been fully replaced by "Templates": top nav now
+    reads "My templates" (→ /packs?ws=48), the page title is "Templates",
+    and delivered brand workspaces live at /w/<brand> with per-garment
+    template cards at /p/<brand>-<garment>. The narration frames that
+    evolution: we save the locked-in look, hand the brand a workspace,
+    and the brand swaps garments and clicks Generate.
+
+url: "https://www.astria.ai/prompts"
+requires_auth: true
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 60
+
+narration: |
+  Once a look is working — the model, the background, the lighting, the
+  framing — we stop iterating and lock it in. Open the hamburger on a
+  generation, click Template, and save a New Template. From that point,
+  no matter what garment you drop in, it will keep the model, the
+  background, and the lighting you originally defined.
+
+  This template is what we deliver to the brand. It's not a folder of
+  images; it's a recipe. The brand opens My Templates, picks the one we
+  built for them, swaps in a new garment — and everything else stays
+  consistent: the same angle, the same model, the same scene.
+
+  The template itself holds a collection of prompts — front, side, back,
+  detail. That's what makes this scale. A brand gets a hundred shirts
+  from the manufacturer; they select thirty at once, click Generate, and
+  the template runs them across four models in the same angles and the
+  same look.
+
+beats:
+  # ─── Act 1: author side — lock it in ────────────────────────────
+  - id: land-on-prompts
+    at: "0-4s"
+    say: "Once a look is working, we stop iterating and lock it in."
+    show: "land on astria.ai/prompts with recent generations in view."
+    action: settle
+
+  - id: hover-generated-image
+    at: "4-10s"
+    say: "Open the hamburger on a generation…"
+    show: "cursor glides to a generated image; the image-edit dropdown trigger appears."
+    action:
+      type: hover
+      target: ".prompt-image"
+      hold_ms: 1200
+
+  - id: open-image-dropdown
+    at: "10-16s"
+    say: "…click Template, and save a New Template."
+    show: "click the image-edit hamburger; Edit / Crops / Convert to Reference appear — this is where 'Save as Template' lives."
+    action:
+      type: click
+      target: ".dropdown > button.btn.btn-sm.btn-over-image[tabindex='0']"
+      wait_after_ms: 2000
+
+  - id: tour-dropdown-items
+    at: "16-24s"
+    say: "From that point, no matter what garment you drop in…"
+    show: "cursor glides down the dropdown items: Edit → Edit area → Crops → Convert to Reference."
+    action:
+      type: cursor-tour
+      targets:
+        - "a[data-action*='prompt#setInputImage']"
+        - "a[data-action*='prompt#setInputImageAndDrawMask']"
+        - "a[data-action*='tune-uploader#processImageUrl']"
+      per_ms: 1400
+
+  # ─── Act 2: navigate to the brand's delivered workspace ─────────
+  - id: goto-my-templates
+    at: "24-30s"
+    say: "The brand opens My Templates…"
+    show: "cursor glides up to the 'My templates' top-nav link, which opens the delivered workspace."
+    action:
+      type: hover
+      target: "a[href*='/packs?ws=']"
+      hold_ms: 1200
+
+  - id: goto-zara-workspace
+    at: "30-36s"
+    say: "…picks the one we built for them…"
+    show: "navigate to astria.ai/w/zara — the delivered brand workspace with nine garment templates."
+    action:
+      type: goto
+      url: "https://www.astria.ai/w/zara"
+
+  - id: tour-template-grid
+    at: "36-48s"
+    say: "…swaps in a new garment — and everything else stays consistent."
+    show: "cursor tours across the template grid: Pants → Shirt → Sneakers → Jacket → Dress → Heels."
+    action:
+      type: cursor-tour
+      targets:
+        - "a[href='/p/zara-pants']"
+        - "a[href='/p/zara-shirt']"
+        - "a[href='/p/zara-shoes']"
+        - "a[href='/p/zara-brown-jacket']"
+        - "a[href='/p/zara-yellow-dress']"
+      per_ms: 1600
+
+  # ─── Act 3: inside one template — where the brand clicks Generate ──
+  - id: open-shirt-template
+    at: "48-56s"
+    say: "The template itself holds a collection of prompts — front, side, back, detail."
+    show: "click the Shirt template → lands on /p/zara-shirt showing the lookbook grid."
+    action:
+      type: click
+      target: "a[href='/p/zara-shirt']"
+      wait_after_ms: 3000
+
+  - id: hover-generate
+    at: "56-60s"
+    say: "…click Generate — and the template runs them across four models."
+    show: "cursor settles on the top-nav Generate button."
+    action:
+      type: hover
+      target: "a:has-text('Generate')"
+      hold_ms: 3200

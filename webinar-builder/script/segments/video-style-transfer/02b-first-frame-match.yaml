@@ -1,0 +1,25 @@
+id: 02b-first-frame-match
+title: "First-frame match"
+order: 2.5
+visual: video-showcase
+
+showcase:
+  videos:
+    - src: "assets/results/video-style-transfer/driving-jc.mp4"
+      label: "DRIVING VIDEO"
+    - src: "assets/results/video-style-transfer/showcase-left.mp4"
+      label: "GENERATED RESULT"
+
+caption:
+  eyebrow: "TIP · FIRST FRAME MATCH"
+  html: |
+    Nail the first frame
+    <span class="accent">before</span>
+    you render the video.
+
+narration: |
+  Here's the trick. The model locks the look from the driving video's
+  first frame — face, pose, garments, background. So before you spend
+  credits on a full video, generate just the still in the image tab.
+  Iterate the prompt until the first frame matches what you want. Then
+  switch to video mode and render. Way faster, way cheaper.

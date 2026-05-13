@@ -1,0 +1,45 @@
+[
+  {
+    "url": "https://a.astria.ai/assets/logo-33bb986e5b54ebc305c4cca2224e0042a3eae6b2d53f48bb86ae1f480a153f21.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Astria",
+    "description": "Astria",
+    "aboveFold": true,
+    "sectionClasses": "mt-12"
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/favicon-56fc2dd378a3ed665741439d9bff745a2d2a9c6c8ef308c93bc2752f5bd4cd4c.ico",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/apple-touch-icon-11f97c8ebc6e462818ab04f1e834385b41fd8a2992757e43414e0acae47bf3fe.avif",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"apple-touch-icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/apple-touch-icon-120x120-27583d50cb28c71bbf1121f01be16bb7708b3f4d8d24572ff2a8f9b42d5c8e6d.avif",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"apple-touch-icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/high-quality-finetuning-8669ca7401053865af1aa93a6fc3a51eaa2bcd0fd7d916edad4245f9ca18d2bf.avif",
+    "type": "Image",
+    "contexts": [
+      "meta[og:image]"
+    ],
+    "notes": null
+  }
+]

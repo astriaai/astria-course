@@ -12,20 +12,26 @@
 
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import "dotenv/config";
+
+import { replicateApiKey, uploadFileToReplicate } from "./replicate-files.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
 const PREDICT_ENDPOINT =
   "https://api.replicate.com/v1/models/prunaai/p-video-avatar/predictions";
-const FILES_ENDPOINT = "https://api.replicate.com/v1/files";
 
 export type PrunaResolution = "720p" | "1080p";
 
-function audioCacheKey(audioPath: string, imageUrl: string, resolution: string) {
+function audioCacheKey(
+  audioPath: string,
+  imageUrl: string,
+  resolution: string,
+  videoPrompt: string | undefined
+) {
   const bytes = readFileSync(audioPath);
   const h = createHash("sha256");
   h.update(bytes);
@@ -33,23 +39,9 @@ function audioCacheKey(audioPath: string, imageUrl: string, resolution: string) 
   h.update(imageUrl);
   h.update("|");
   h.update(resolution);
+  h.update("|");
+  h.update(videoPrompt ?? "");
   return h.digest("hex").slice(0, 12);
-}
-
-async function uploadAudio(audioPath: string, apiKey: string): Promise<string> {
-  const buf = readFileSync(audioPath);
-  const form = new FormData();
-  // Replicate infers the type from the filename extension. Default our TTS
-  // outputs to mp3 — pass the basename so the server sees a real extension.
-  form.append("content", new Blob([buf]), basename(audioPath));
-  const res = await fetch(FILES_ENDPOINT, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}` },
-    body: form,
-  });
-  if (!res.ok) throw new Error(`Replicate file upload failed: ${res.status} ${await res.text()}`);
-  const json = (await res.json()) as { urls: { get: string } };
-  return json.urls.get;
 }
 
 interface ReplicatePrediction {
@@ -64,24 +56,28 @@ async function submit(
   audioUrl: string,
   imageUrl: string,
   resolution: PrunaResolution,
+  videoPrompt: string | undefined,
   apiKey: string
 ): Promise<ReplicatePrediction> {
+  // Only include video_prompt when set — letting Replicate fall back to its
+  // own default ("The person is talking.") when the caller doesn't specify.
+  const input: Record<string, unknown> = { image: imageUrl, audio: audioUrl, resolution };
+  if (videoPrompt) input.video_prompt = videoPrompt;
+
   const res = await fetch(PREDICT_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({
-      input: { image: imageUrl, audio: audioUrl, resolution },
-    }),
+    body: JSON.stringify({ input }),
   });
   if (!res.ok) throw new Error(`Pruna submit failed: ${res.status} ${await res.text()}`);
   return (await res.json()) as ReplicatePrediction;
 }
 
 async function poll(getUrl: string, onTick: (s: string) => void): Promise<string> {
-  const apiKey = (process.env.REPLICATE_API_KEY ?? process.env.REPLICATE_API_TOKEN)!;
+  const apiKey = replicateApiKey();
   const deadline = Date.now() + 15 * 60 * 1000;
   while (Date.now() < deadline) {
     const res = await fetch(getUrl, { headers: { Authorization: `Bearer ${apiKey}` } });
@@ -104,18 +100,19 @@ async function download(url: string, dest: string) {
 }
 
 export async function generatePruna(
+  project: string,
   segmentId: string,
   audioPath: string,
   imageUrl: string,
-  resolution: PrunaResolution = "720p"
+  resolution: PrunaResolution = "720p",
+  videoPrompt?: string
 ): Promise<string> {
-  const apiKey = (process.env.REPLICATE_API_KEY ?? process.env.REPLICATE_API_TOKEN);
-  if (!apiKey) throw new Error("REPLICATE_API_KEY (or REPLICATE_API_TOKEN) not set");
+  const apiKey = replicateApiKey();
   if (!existsSync(audioPath)) throw new Error(`audio file not found: ${audioPath}`);
 
-  const avatarDir = join(ROOT, "assets", "avatars");
+  const avatarDir = join(ROOT, "assets", "avatars", project);
   mkdirSync(avatarDir, { recursive: true });
-  const key = audioCacheKey(audioPath, imageUrl, resolution);
+  const key = audioCacheKey(audioPath, imageUrl, resolution, videoPrompt);
   const cached = join(avatarDir, `${segmentId}.${key}.mp4`);
   const active = join(avatarDir, `${segmentId}.mp4`);
 
@@ -127,9 +124,13 @@ export async function generatePruna(
 
   const sizeKb = Math.round(statSync(audioPath).size / 1024);
   console.log(`[pruna] ${segmentId}: uploading audio (${sizeKb} KB) to Replicate`);
-  const audioUrl = await uploadAudio(audioPath, apiKey);
-  console.log(`[pruna] ${segmentId}: submitting (resolution=${resolution})`);
-  const submitted = await submit(audioUrl, imageUrl, resolution, apiKey);
+  const audioUrl = await uploadFileToReplicate(audioPath);
+  console.log(
+    `[pruna] ${segmentId}: submitting (resolution=${resolution}${
+      videoPrompt ? `, prompt="${videoPrompt.slice(0, 80)}${videoPrompt.length > 80 ? "…" : ""}"` : ""
+    })`
+  );
+  const submitted = await submit(audioUrl, imageUrl, resolution, videoPrompt, apiKey);
   const videoUrl = await poll(submitted.urls.get, (s) =>
     process.stdout.write(`\r[pruna] ${segmentId}: ${s}           `)
   );
@@ -142,12 +143,19 @@ export async function generatePruna(
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const [id, audio, image, resolution = "720p"] = process.argv.slice(2);
+  const projectIdx = process.argv.indexOf("--project");
+  const project = projectIdx !== -1 ? process.argv[projectIdx + 1] : "webinar";
+  const positional = process.argv.slice(2).filter((a, i, arr) => {
+    if (a === "--project") return false;
+    if (i > 0 && arr[i - 1] === "--project") return false;
+    return true;
+  });
+  const [id, audio, image, resolution = "720p"] = positional;
   if (!id || !audio || !image) {
-    console.error("Usage: tsx pipeline/generate-pruna.ts <segment-id> <audio_path> <image_url> [720p|1080p]");
+    console.error("Usage: tsx pipeline/generate-pruna.ts [--project <name>] <segment-id> <audio_path> <image_url> [720p|1080p]");
     process.exit(1);
   }
-  generatePruna(id, audio, image, resolution as PrunaResolution).catch((e) => {
+  generatePruna(project, id, audio, image, resolution as PrunaResolution).catch((e) => {
     console.error(e);
     process.exit(1);
   });

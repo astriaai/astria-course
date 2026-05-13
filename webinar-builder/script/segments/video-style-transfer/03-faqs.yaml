@@ -1,0 +1,25 @@
+id: 03-faqs
+title: "FAQs"
+order: 3
+visual: presenter-slide
+
+slide:
+  eyebrow: "FAQ"
+  title_html: |
+    Two more things to
+    <span class="accent">know</span>.
+  bullets:
+    - "Max duration 15 s — for longer videos, concat several clips together."
+    - "Prompting — describe what's happening: motion, scene, background. Keywords like 'natural relaxed pose' and 'fumbling her eyes' help."
+  bullet_starts: [3.0, 14.0]
+
+narration: |
+  Two more things to know.
+
+  First — max duration is fifteen seconds per clip. For longer videos,
+  just concat several clips together.
+
+  Second — prompting. Describe what's happening in the scene: the motion
+  or actions, the background — for example, plain white background.
+  Keywords like natural relaxed pose, fumbling her eyes, micro-expressions,
+  help the model land the look.

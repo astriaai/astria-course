@@ -1,0 +1,428 @@
+[
+  {
+    "url": "https://a.astria.ai/assets/logo-33bb986e5b54ebc305c4cca2224e0042a3eae6b2d53f48bb86ae1f480a153f21.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Astria",
+    "description": "Astria",
+    "aboveFold": true,
+    "sectionClasses": "mt-12"
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/github-mark-white-e4e5656c277ce04a85a2f165627f907128e5907256b0da33bb762658690c92df.svg",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": null,
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/corporate-headshots/corporate-headshot1-07e64b64969834afb099ac89ff86a8b5197c6a29e3e3367620687929d68415dc.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Flux fine-tuning results for AI photoshoot.",
+    "description": "Flux fine-tuning results for AI photoshoot.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/virtual-try-on-dress-out-a886bd0fbb9b9797a96212bae47e851739e2c1444bc2665d1ff49a1d82c64300.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Virtual try-on with Flux. Use garment reference images.",
+    "description": "Virtual try-on with Flux. Use garment reference images.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/social-photoshoot-802102295af03895e286804cf0dfac6c09ae716a99bb6f978fbaf16e9c9c590e.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "LoRA fine-tuning for social applications.",
+    "description": "LoRA fine-tuning for social applications.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/filters/ai-filters-0-7f86598ac8ca49f8a32bf5e1e0246b29af57c7fe13d06cfb4df8c98002a26654.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Generative image filters for artistic effects.",
+    "description": "Generative image filters for artistic effects.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/pets/0000-044a16400ed4223f26a36fe8308efdccf186b5200562c8adcdb3ee530ba1b909.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Fine-tuning for pet images.",
+    "description": "Fine-tuning for pet images.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/product-shots/product-placement-background-replacement-shoe-out1-298dd820f38cbfed8dc271f122f37f6bbcac169e752622dcd6b7b3c626d87d87.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Product placement and background replacement.",
+    "description": "Product placement and background replacement.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/upscale/upscale-1-out-4afc549058fa9973506263975f94990a11402631b6bb5f5dcba3dd6eab7a4778.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Upscaling images using generative models.",
+    "description": "Upscaling images using generative models.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/interior/ai-interrior-redesign-segroom-masking-95559bf0d828d55aab80a284abdeaf23b68fc3881ead93192945e0236d776c13.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Interior design with generative models.",
+    "description": "Interior design with generative models.",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": true
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0000-15a31fa6b38d368ae4683df39ecd538c23c11d355d578dde93e021bdb878faf0.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0001-37b0dcdaa3978d863ab865e73d4627dbc0fc6236ee4e8aedebd2751230b1cc20.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0002-aee9e16832662422c95859372ac13629137824ce95ed586317386194ab6e79bd.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0003-ba884220e7175eb4a2e06fb9c5f72300cc957f3cb48d55c5572aa097251b3635.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0004-3230ae842afc1969d7a86a7962a570310640010c466f25782fa779aa07c4c4d5.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0005-8eca99d2d8f74160c272c227b4d9936659d084dcce9f99aff0ac1536573ead24.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0006-bfb98aef4f2f455768b68e1269c076013e2364abb0fff8d2b12fb729fc73a4e3.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0007-d0bcc2f54010ae01c67ac11d15ea3651cd66fa3453dcf98d40de86b4450b4138.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0008-de685b758f7752c4241c45c81a536925e5a69d3c96c8995b4ca1e5e9b19661a7.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0009-0f70d5bb445a17d1d405c173c153ab8b6ff0d4bfe8c4bf104edbff13d588728f.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0010-ed9f444e712753c31bda13319e889329807c564273693fa01fd40752221786bf.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0011-8e5d5cfeb701198350085def942ad3b2b2e58312b9680e13cd05f28780f955c1.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0012-3d6698b3f2bbf1994a844e1bc890d973686b7456835026dbf7b733e9afdfd5d5.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0013-3a4812b93736ef3bd03d37ec83b8f621a3fa5dd43d5dd0b2a6e241d75e718a32.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/highlights/0014-481792eefafcce98c242d53f2738d02b507896be6466d887cb8ce061a0c04edc.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "AI generated image",
+    "description": "AI generated image",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/myheritage-cb448088e76b8dfc95ed9375050156a8b09de843d91efb67def6717e3e10ba49.svg",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "MyHeritage",
+    "description": "MyHeritage",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/nvidia-70c32303bc9ae823349641694f7779dbdeef9b01840ad07fff8157b70331ed84.svg",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "NVIDIA",
+    "description": "NVIDIA",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/602c-2901606ea54b64dae5904a9dab8d4cdd611eca12ef727dabe9c7b82313064954.svg",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "Leap",
+    "description": "Leap",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/fixthephoto-logo-photo-retouching-d-125377f9b7d0513f86427a7cfd7857e93d5f20defae03889a6bca34a47e6b160.avif",
+    "type": "Image",
+    "contexts": [
+      "img[src]"
+    ],
+    "notes": "FixThePhoto",
+    "description": "FixThePhoto",
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/grow/1-4b328ec5eca8c1e6a50cd79777ebc898c2b72065137832ac6d2cf6113ab246bc.avif",
+    "type": "Background",
+    "contexts": [
+      "css url()",
+      "html inline style url()"
+    ],
+    "notes": null,
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/grow/2-eb7732de8eadb73c3bb60ceebe6ad9ff55ffa21237e1b77b52fbf67376cd7ea5.avif",
+    "type": "Background",
+    "contexts": [
+      "css url()",
+      "html inline style url()"
+    ],
+    "notes": null,
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/grow/5-6af6fffa46161a11bb9b7570d664d880a75cfedf783aa25fa1f95a18d92d9721.avif",
+    "type": "Background",
+    "contexts": [
+      "css url()",
+      "html inline style url()"
+    ],
+    "notes": null,
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/homepage/grow/4-835f242df757b2809f92745360e0d208a22b1132b936d3dad5f30df45d8c7303.avif",
+    "type": "Background",
+    "contexts": [
+      "css url()",
+      "html inline style url()"
+    ],
+    "notes": null,
+    "nearestHeading": "Fine-tuning API",
+    "sectionClasses": "flex-row",
+    "aboveFold": false
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/favicon-56fc2dd378a3ed665741439d9bff745a2d2a9c6c8ef308c93bc2752f5bd4cd4c.ico",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/apple-touch-icon-11f97c8ebc6e462818ab04f1e834385b41fd8a2992757e43414e0acae47bf3fe.avif",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"apple-touch-icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/favicon/apple-touch-icon-120x120-27583d50cb28c71bbf1121f01be16bb7708b3f4d8d24572ff2a8f9b42d5c8e6d.avif",
+    "type": "Icon",
+    "contexts": [
+      "link[rel=\"apple-touch-icon\"]"
+    ],
+    "notes": null
+  },
+  {
+    "url": "https://a.astria.ai/assets/high-quality-finetuning-8669ca7401053865af1aa93a6fc3a51eaa2bcd0fd7d916edad4245f9ca18d2bf.avif",
+    "type": "Image",
+    "contexts": [
+      "meta[og:image]"
+    ],
+    "notes": null
+  }
+]

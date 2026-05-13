@@ -1,0 +1,64 @@
+id: 06-brand-implementations
+title: "Brand identity in Astria — three real implementations"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:19:15-00:30:28"
+  note: |
+    Wide arc starting from "templates off the shelf don't work — each brand
+    is different" through the three fictitious-brand walkthroughs (Zara,
+    Adidas-style sportswear, Uniqlo-style basics), into the Astria
+    templatization/workspace model, and out with "brands need help; the
+    platform abstracts the model churn." We condense to ~70s by picking
+    the three brand pages and letting the visuals carry the point.
+
+urls:
+  - label: "Zara"
+    url: "https://www.astria.ai/w/zara"
+    note: "Opens with a hero video at top — let it play briefly before scrolling."
+  - label: "Great Sports (Adidas-style)"
+    url: "https://www.astria.ai/w/great-sports"
+  - label: "America Basics (Uniqlo-style)"
+    url: "https://www.astria.ai/w/america-basics"
+
+requires_auth: false
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 70
+
+beats:
+  - id: zara-land
+    at: "0-3s"
+    say: "Here's how we actually implement brand identity in Astria."
+    show: "Load the Zara workspace; hero video begins playing."
+    action: settle
+
+  - id: zara-video
+    at: "3-9s"
+    say: "Every brand has its own visual language — hex colors, model choices, atmosphere."
+    show: "Let the hero video play; cursor rests near the top of the gallery."
+    action: settle
+
+  - id: zara-scroll
+    at: "9-22s"
+    say: "Zara — editorial fashion, outdoor shoots, European aesthetic. A set of templates across dresses, shoes, outerwear."
+    show: "Slow scroll down through the Zara gallery."
+    action: { type: scroll-to, y_end: 2600, duration_ms: 11000 }
+
+  - id: great-sports
+    at: "22-40s"
+    say: "Great Sports — Adidas-style. Higher intensity, athletic energy, a different set of models and templates entirely."
+    show: "Navigate to /w/great-sports; scroll through the gallery."
+    action: { type: scroll-to, y_end: 2600, duration_ms: 15000 }
+
+  - id: america-basics
+    at: "40-60s"
+    say: "And America Basics — a Uniqlo-style brand. Neutrals, friendly expressions. Completely different DNA."
+    show: "Navigate to /w/america-basics; scroll through the gallery."
+    action: { type: scroll-to, y_end: 2600, duration_ms: 15000 }
+
+  - id: settle
+    at: "60-70s"
+    say: "For each brand we deliver a workspace with a set of templates — one per garment type. The studio uploads a product and gets the full lookbook in one click."
+    show: "Hold on a styled-look image."
+    action: settle

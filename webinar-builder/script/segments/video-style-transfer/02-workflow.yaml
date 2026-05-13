@@ -1,0 +1,41 @@
+id: 02-workflow
+title: "Four-step workflow"
+order: 2
+visual: screencast-pip
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/video-style-transfer/02-workflow.ts"
+
+caption:
+  eyebrow: "WORKFLOW"
+  html: |
+    Four
+    <span class="accent">steps</span>.
+
+slide:
+  bullets:
+    - "Write a minimal image prompt"
+    - "Select an input driving video"
+    - "Write a minimal video prompt"
+    - "Select Seedance 2 fast — 720p or 480p"
+  # Paced to the ~41s draft narration. Re-tune once real Gemini TTS lands.
+  bullet_starts: [3.0, 12.0, 22.0, 32.0]
+
+narration: |
+  Here's the four-step flow.
+
+  First — write a minimal image prompt in the image tab. Subject,
+  framing, nothing more. Astria handles the rest.
+
+  Next — pick the driving video. This is the motion source. We'll
+  use a 360 turnaround so the model rotates naturally.
+
+  Third — write a minimal video prompt describing the action. In our
+  case: she is turning around 360, professional lookbook, plain
+  white background, looking at the camera, natural relaxed pose,
+  micro-expressions, with shot cuts every two seconds.
+
+  Finally — select Seedance 2 fast, at 720p or 480p. That's it.
+  Hit generate and you'll get the result clips you saw at the start.

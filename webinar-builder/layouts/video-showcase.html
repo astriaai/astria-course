@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0B0B0C;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #F4F1EC;
+      }
+      #root::before {
+        content: "";
+        position: absolute;
+        inset: -10%;
+        background: radial-gradient(60% 50% at 50% 35%, rgba(224, 106, 78, 0.10) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Two video panes — side-by-side, centered, sized to fit the
+         vertical gap between the caption strip and the headline. Sources
+         can be any aspect ratio (we usually drop in portrait result
+         clips); object-fit: contain preserves the full frame and lets
+         the dark background fill the letterbox.
+      */
+      /* Layout math (canvas 1920x1080):
+           caption strip:  y=40..100 (40px top + 60px high)
+           video grid:     y=120..920 (800px tall)
+           headline:       y=940..1020 (80px high, 60px from bottom)
+         Each video box is 600x800 (3:4 to match portrait sources).
+         Two boxes + 32px gap = 1232px; centered in 1920 = 344px margin. */
+      .showcase-grid {
+        position: absolute;
+        top: 120px;
+        left: 0;
+        right: 0;
+        height: 800px;
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+      }
+      .showcase-pane {
+        position: relative;
+        width: 600px;
+        height: 800px;
+      }
+      .showcase-video {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        background: #1E1D1C;
+        object-fit: contain;
+        display: block;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(244, 241, 236, 0.06);
+      }
+      .showcase-label {
+        position: absolute;
+        top: -34px;
+        left: 0;
+        right: 0;
+        font-size: 14px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #A8A39A;
+        font-weight: 500;
+        text-align: center;
+      }
+      .showcase-label .accent {
+        color: #E06A4E;
+      }
+
+      /* Caption strip — top of canvas, centered. */
+      #seg-caption {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        right: 40px;
+        height: 60px;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+        text-align: center;
+      }
+      .caption-eyebrow {
+        font-size: 16px;
+        letter-spacing: 0.32em;
+        color: #A8A39A;
+        font-weight: 500;
+        position: relative;
+        padding: 0 28px;
+      }
+      .caption-eyebrow::before,
+      .caption-eyebrow::after {
+        content: "";
+        position: absolute;
+        top: 11px;
+        width: 16px;
+        height: 1px;
+        background: #E06A4E;
+      }
+      .caption-eyebrow::before { left: 0; }
+      .caption-eyebrow::after { right: 0; }
+
+      /* Headline strip — below the videos. */
+      #seg-headline {
+        position: absolute;
+        bottom: 60px;
+        left: 40px;
+        right: 40px;
+        height: 80px;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .headline-text {
+        font-size: 42px;
+        line-height: 1.18;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: #F4F1EC;
+        text-align: center;
+      }
+      .headline-text .accent { color: #E06A4E; }
+
+      {{CAPTIONS_CSS}}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{DURATION}}" data-width="1920" data-height="1080">
+      <audio id="seg-narration" class="clip" data-start="0" data-duration="{{DURATION}}" data-track-index="0" src="{{AUDIO_SRC}}" data-volume="1"></audio>
+
+      <!-- Side-by-side result videos. Each loops natively. -->
+      <div class="showcase-grid">
+        {{SHOWCASE_VIDEOS_HTML}}
+      </div>
+
+      <!-- Caption (eyebrow above the videos) -->
+      <div id="seg-caption" class="clip" data-start="0" data-duration="{{DURATION}}" data-track-index="10">
+        <div class="caption-eyebrow" id="caption-eyebrow">{{CAPTION_EYEBROW}}</div>
+      </div>
+
+      <!-- Headline (below the videos) -->
+      <div id="seg-headline" class="clip" data-start="0" data-duration="{{DURATION}}" data-track-index="11">
+        <div class="headline-text" id="headline-text">{{CAPTION_HTML}}</div>
+      </div>
+
+      {{CAPTIONS_HTML}}
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Both panes rise + fade in together.
+      tl.from(".showcase-pane", { opacity: 0, scale: 0.95, duration: 0.8, ease: "power3.out", stagger: 0.12 }, 0.2);
+      tl.from(".showcase-label", { opacity: 0, y: -8, duration: 0.5, ease: "power2.out", stagger: 0.12 }, 0.6);
+      // Caption eyebrow stagger
+      tl.from("#caption-eyebrow", { opacity: 0, x: -20, duration: 0.5, ease: "power2.out" }, 0.6);
+      // Headline reveal
+      tl.from("#headline-text", { opacity: 0, y: 20, duration: 0.7, ease: "expo.out" }, 0.8);
+
+      {{CAPTIONS_GSAP}}
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

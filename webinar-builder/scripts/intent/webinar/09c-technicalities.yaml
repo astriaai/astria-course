@@ -1,0 +1,67 @@
+id: 09c-technicalities
+title: "Technicalities — model, resolution, aspect, count"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:44:47-00:54:11"
+  note: |
+    Split from 09-lookbook-references. Settings panel below the Lookbook
+    cube grid: model dropdown, resolution, aspect ratio, images per
+    prompt. Reuses the hoverByText + scroll-into-view pattern from the
+    legacy 09 record script.
+
+url: "https://www.astria.ai/prompts"
+requires_auth: true
+
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 24
+
+narration: |
+  (See script/segments/09c-lookbook-technicalities.yaml for canonical narration.)
+
+beats:
+  - id: scroll-to-settings
+    at: "0-3s"
+    say: "Now for a few technicalities."
+    show: "Scroll the model/resolution/aspect/count row into view."
+    action:
+      type: scroll-to
+      y: 1200
+      duration_ms: 1500
+
+  - id: hover-model
+    at: "3-7s"
+    say: "Model — make sure Nano Banana 2 is selected."
+    show: "Hover the model dropdown trigger."
+    action:
+      type: hover
+      target: "text=/Nano Banana/i, [class*='model'] button, button[aria-haspopup]"
+      hold_ms: 2500
+
+  - id: hover-resolution
+    at: "7-13s"
+    say: "Resolution — 2K for iterating quickly. Once you're happy with the look, switch to 4K."
+    show: "Hover the resolution selector."
+    action:
+      type: hover
+      target: "text=/^2K$/i, text=/Resolution/i, [data-controller*='resolution']"
+      hold_ms: 4500
+
+  - id: hover-aspect
+    at: "13-18s"
+    say: "Aspect ratio — 3:4. Most lookbooks are 3:4."
+    show: "Hover the 3:4 aspect ratio control."
+    action:
+      type: hover
+      target: "text=/3:4/, text=/3 : 4/, [data-controller*='aspect']"
+      hold_ms: 4000
+
+  - id: hover-count
+    at: "18-24s"
+    say: "And for quicker iteration, 2 images per prompt. Later, bump it to 4 if you want more variation."
+    show: "Hover the images-per-prompt control."
+    action:
+      type: hover
+      target: "text=/per prompt/i, text=/images/i, [data-controller*='count']"
+      hold_ms: 4500

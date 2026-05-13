@@ -1,0 +1,51 @@
+id: 04-brands-verticals
+title: "Who this is for — brands & verticals"
+order: 4
+visual: presenter-slide
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:14:14-00:14:56"   # SRT entries 53–63 (brands & verticals)
+
+slide:
+  eyebrow: "AUDIENCE · 04"
+  title_html: |
+    Who <span class="accent">this</span> is for.
+  columns:
+    - heading: "Brands"
+      bullets:
+        - "E-commerce"
+        - "DTC — Direct to consumer"
+        - "Retailers"
+      # anchors: "e-commerce" @8.06, "DTC" @11.00, "retailers" @17.09
+      bullet_starts: [7.9, 10.8, 16.9]
+    - heading: "Verticals"
+      bullets:
+        - "Fashion & apparel"
+        - "Footwear"
+        - "Outdoor & professional"
+        - "Jewelry"
+        - "Glasses"
+        - "Beauty"
+      # rapid-fire enumeration: fashion @23.5, footwear @24.83, outdoor @25.57,
+      # jewelry @27.72, glasses @28.42, beauty @29.35
+      bullet_starts: [23.3, 24.7, 25.4, 27.5, 28.3, 29.2]
+
+narration: |
+  Before we go further, let me clarify who this is actually for.
+
+  On the brand side, we work with three types of business.
+  E-commerce — companies selling product online. DTC brands —
+  going directly to the consumer, with or without a store. And
+  traditional retailers who need scalable visual content for
+  their catalogs.
+
+  The verticals where this really shines are fashion and apparel,
+  footwear, outdoor and professional gear, jewelry, glasses, and
+  beauty. If your product lives on a model or on a body, AI
+  photoshoots are going to change how you produce imagery.
+
+avatar:
+  emotion: "friendly"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

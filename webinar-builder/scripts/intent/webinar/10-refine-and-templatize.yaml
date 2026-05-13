@@ -1,0 +1,178 @@
+id: 10-refine-and-templatize
+title: "Refine prompts, Describe, templatize"
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  timestamp: "00:58:00-01:12:00"
+  gemini_reports:
+    - ".cache/gemini/chunk-010000-010400.json"   # 1:00-1:04 — prompt typing + Describe + paste-from-clipboard
+    - ".cache/gemini/s5-010600-010800.json"      # 1:06-1:08 — Pose modal → "back view"
+    - ".cache/gemini/s5-010800-011000.json"      # 1:08-1:10 — Face slot swap + thumb context menu
+    - ".cache/gemini/s5-011000-011200.json"      # 1:10-1:12 — Pack dropdown → New Pack
+  note: |
+    The 14-minute source range is distilled to four UI beats that faithfully
+    replay the meaningful edits the presenter showed:
+
+      1. Type a prompt phrase + hover Describe / Paste from clipboard (1:00)
+      2. Unsplash detour — navigate to unsplash.com/s/photos/fashion-photography,
+         click a result, copy the image to clipboard, come back to Astria,
+         click "Paste from clipboard" → Describe  (1:00-1:03 in source)
+      3. Pose slot → modal → pick "back view"; Face slot → modal → pick a
+         face; hover generated image → context menu (Crop / Remove BG /
+         Edit with Nano Banana 2)  (1:06-1:09)
+      4. Pack dropdown on a generated image → "New Pack" → name it  (1:11)
+
+    Clipboard handling: we grant clipboard-read/write to the Playwright
+    context at runtime and programmatically write a Pexels image to the
+    clipboard (fetch → canvas → ClipboardItem image/png). Astria's "Paste
+    from clipboard" button then reads the same clipboard, matching the
+    live-demo behavior without relying on a native right-click menu.
+
+url: "https://www.astria.ai/prompts"
+requires_auth: true
+
+viewport: "1600x900"
+device_scale_factor: 2
+duration_s: 180
+preconditions:
+  needs_uploaded_reference: true
+  note: |
+    Assumes the session lands on /prompts with an existing Lookbook setup
+    — face, top, bottom, footwear references already in the cube grid, plus
+    at least one generated image below. If the session is fresh, cubes and
+    thumbnails will be empty and several beats will short-circuit (the
+    hoverByText / pickCube helpers fail softly).
+
+narration: |
+  Most bugs you'll hit aren't the model being wrong — they're conflicts
+  between the crop you asked for and the references you loaded. A medium
+  shot with a shoe reference tries to cram a face and shoes into one
+  frame and distorts. Keep the crop, the references, and the prompt
+  telling the same story.
+
+  When you need finer control than the Lookbook gives you, go to the
+  prompt box. A handful of high-impact keywords goes a long way —
+  diffused lighting, realistic skin, soft expression. That's where brand
+  DNA lives: serious or pleased, high-end or low-cost.
+
+  The Describe tool closes the loop between references and prompts. Let
+  me grab a reference from Unsplash — a search for fashion photography
+  pulls scenes close to what we want. Copy one, back to Astria, click
+  Paste from clipboard, then Describe. The tool extracts a prompt, but
+  it listens to the references you already have and avoids describing
+  them. No more white shirt in the prompt fighting a yellow dress in
+  the reference.
+
+  Once a look works — model, pose, lighting, expression — stop iterating
+  and templatize. Turn the pack into a template. From there it's a
+  digital product: the brand's studio picks a template, uploads a
+  packshot, and runs the lookbook. Build once, scale forever.
+
+beats:
+  # ── Beat 1 — prompt box + Describe (~0-36s) ────────────────────────
+  - id: land-on-prompts
+    at: "0-8s"
+    say: "Most bugs you'll hit aren't the model being wrong — they're conflicts between the crop and the references you loaded."
+    show: "land on astria.ai/prompts with the Lookbook cube grid and a generated image visible below."
+    action:
+      type: navigate
+      target: "/prompts"
+      wait_after_ms: 2000
+
+  - id: scan-cubes
+    at: "8-22s"
+    say: "A medium shot with a shoe reference tries to cram a face and shoes into one frame and distorts."
+    show: "cursor tours the cube slots — face, top, bottom, footwear — showing what the model has been told."
+    action:
+      type: cursor-tour
+      targets:
+        - ".cube-cell[data-lookbook-names-param='face']"
+        - ".cube-cell[data-lookbook-names-param='top']"
+        - ".cube-cell[data-lookbook-names-param='bottom']"
+        - ".cube-cell[data-lookbook-names-param='footwear']"
+      per_ms: 1400
+
+  - id: hover-prompt-box
+    at: "22-36s"
+    say: "When you need finer control, go to the prompt box — a handful of high-impact keywords goes a long way."
+    show: "cursor glides to the prompt input area (below the cube grid), holds on the Describe button."
+    action:
+      type: hover
+      target: "textarea, [contenteditable='true']"
+      hold_ms: 1500
+
+  # ── Beat 2 — Describe / Paste from clipboard (~36-68s) ─────────────
+  - id: show-describe-button
+    at: "36-50s"
+    say: "The Describe tool extracts a prompt from a reference image."
+    show: "hover and brief click feedback on the Describe button."
+    action:
+      type: hover
+      target: "button:has-text('Describe')"
+      hold_ms: 2500
+
+  - id: show-paste-affordance
+    at: "50-68s"
+    say: "Paste an image from the brand's own material — Describe listens to the references you already have, and avoids describing them."
+    show: "cursor glides to the 'Paste from clipboard' affordance next to Describe and holds."
+    action:
+      type: hover
+      target: "text=/Paste from clipboard/i"
+      hold_ms: 2500
+
+  # ── Beat 3 — Pose + face edits (~68-100s) ──────────────────────────
+  - id: open-pose-modal
+    at: "68-78s"
+    say: "Pose, face, everything is editable in place."
+    show: "click the Pose cube; pose selection modal opens with stick-figure options (front, 45-angle, back view, front full body)."
+    action:
+      type: click
+      target: ".cube-cell[data-lookbook-names-param='pose']"
+      wait_after_ms: 1800
+
+  - id: pick-back-view
+    at: "78-88s"
+    say: "Swap the pose and the prompt text updates automatically."
+    show: "click 'back view' — modal closes, pose cube shows the back-view stick figure, prompt line adds 'back view (pose)'."
+    action:
+      type: click
+      target: "text=/back view/i"
+      wait_after_ms: 2000
+
+  - id: hover-image-context
+    at: "88-100s"
+    say: "And every generated image has a menu for cropping, removing background, or editing in place with Nano Banana."
+    show: "hover the first generated image thumbnail — context menu appears (Crop / Remove Background / Edit with Nano Banana 2 / Delete)."
+    action:
+      type: click
+      target: ".ref-thumb:first-of-type, [data-testid='prompt-image']:first-of-type"
+      wait_after_ms: 2000
+
+  # ── Beat 4 — Templatize (~100-140s) ────────────────────────────────
+  - id: open-pack-dropdown
+    at: "100-115s"
+    say: "Once a look works — model, pose, lighting, expression — stop iterating and templatize."
+    show: "dismiss any open menu; cursor glides to the Pack dropdown on the generated image and opens it."
+    action:
+      type: click
+      target: "button:has-text('Pack'), [data-testid='pack-dropdown']"
+      wait_after_ms: 1600
+
+  - id: click-new-pack
+    at: "115-125s"
+    say: "Turn the pack into a template."
+    show: "click 'New Pack' — a text input appears to name the template."
+    action:
+      type: click
+      target: "text=/New Pack/i"
+      wait_after_ms: 1400
+
+  - id: name-the-pack
+    at: "125-140s"
+    say: "It's a digital product — the brand's studio picks a template, uploads a packshot, and runs the lookbook. Build once, scale forever."
+    show: "type a template name, click outside to commit — a template tag is created on the image."
+    action:
+      type: type
+      target: "input[placeholder*='pack' i], input:focus"
+      text: "Parisian bridge — jeans"
+      hold_ms: 1800

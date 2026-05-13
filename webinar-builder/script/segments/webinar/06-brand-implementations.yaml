@@ -1,0 +1,50 @@
+id: 06-brand-implementations
+title: "Brand identity in Astria — three real implementations"
+order: 6
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:19:15-00:30:28"   # brand identity arc + three fictitious-brand demos
+
+screencast:
+  mode: "video"
+  url: "astria.ai/w/zara → great-sports → america-basics"
+  record_script: "scripts/record/06-brand-implementations.ts"
+
+caption:
+  eyebrow: "BRAND DNA · 06"
+  html: |
+    Three brands, three identities —
+    <span class="accent">one platform</span>.
+
+narration: |
+  Here's how we actually implement brand identity in Astria.
+
+  Every brand has its own visual language — its own hex colors, its own
+  models, expressions, and atmosphere. Off-the-shelf templates don't
+  work because a brand will always say "this is beautiful, but it's
+  not me."
+
+  So we build a workspace for each brand, with their models,
+  backgrounds, lighting, and template set defined once — and reused
+  across every collection.
+
+  Here is an example of fashion brand modeled after Zara — editorial fashion, outdoor shoots, European aesthetic.
+  A set of templates across casual, formal, and nightwear.
+
+  Great Sports — Adidas-style. Higher intensity expressions, athletic
+  energy, a completely different set of models and templates.
+
+  And America Basics — a Uniqlo-style brand. Soft neutrals, friendly
+  expressions. Clean, everyday. Completely different DNA from the
+  other two.
+
+  For each brand we deliver a workspace with a set of templates — one
+  per garment type. The studio uploads a product and gets the full
+  lookbook in a single click.
+
+avatar:
+  emotion: "focused"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

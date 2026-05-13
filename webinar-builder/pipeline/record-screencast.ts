@@ -1,18 +1,19 @@
 /**
  * Playwright-driven screencast recorder.
  *
- * Runs a per-segment recording script (scripts/record/<id>.ts) inside a
- * headed-size Chromium, records the browser viewport to webm, and transcodes
+ * Runs a per-segment recording script (scripts/record/<project>/<id>.ts) inside
+ * a headed-size Chromium, records the browser viewport to webm, and transcodes
  * to mp4. Re-running the same script with the same inputs produces a fresh
  * capture — the idea is that when Astria's UI changes you just re-run.
  *
- *   tsx pipeline/record-screencast.ts <segment-id>
+ *   tsx pipeline/record-screencast.ts <segment-id>                       (default project: webinar)
+ *   tsx pipeline/record-screencast.ts --project video-style-transfer 02-workflow
  *
  * Looks up the segment's recording script from:
- *   scripts/record/<segment-id>.ts
+ *   scripts/record/<project>/<segment-id>.ts
  *
  * Outputs:
- *   assets/captures/<segment-id>.mp4
+ *   assets/captures/<project>/<segment-id>.mp4
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync } from "node:fs";
@@ -49,8 +50,8 @@ function run(cmd: string, args: string[]) {
   if (r.status !== 0) throw new Error(`${cmd} ${args.join(" ")} exited with ${r.status}`);
 }
 
-async function runRecording(segmentId: string, script: RecordScript, viewport: Viewport = DEFAULT_VIEWPORT) {
-  const capturesDir = join(ROOT, "assets", "captures");
+async function runRecording(project: string, segmentId: string, script: RecordScript, viewport: Viewport = DEFAULT_VIEWPORT) {
+  const capturesDir = join(ROOT, "assets", "captures", project);
   mkdirSync(capturesDir, { recursive: true });
   const workDir = join(capturesDir, `${segmentId}.work`);
   if (existsSync(workDir)) rmSync(workDir, { recursive: true, force: true });
@@ -198,8 +199,8 @@ async function runRecording(segmentId: string, script: RecordScript, viewport: V
   return mp4Path;
 }
 
-export async function recordScreencast(segmentId: string): Promise<string> {
-  const scriptPath = join(ROOT, "scripts", "record", `${segmentId}.ts`);
+export async function recordScreencast(project: string, segmentId: string): Promise<string> {
+  const scriptPath = join(ROOT, "scripts", "record", project, `${segmentId}.ts`);
   if (!existsSync(scriptPath)) throw new Error(`Recording script not found: ${scriptPath}`);
 
   // Dynamic import — tsx resolves the TS module
@@ -209,16 +210,23 @@ export async function recordScreencast(segmentId: string): Promise<string> {
     throw new Error(`${scriptPath} must export a default async function (api) => ...`);
   }
   const viewport: Viewport | undefined = mod.viewport;
-  return runRecording(segmentId, script, viewport);
+  return runRecording(project, segmentId, script, viewport);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const id = process.argv[2];
+  const projectIdx = process.argv.indexOf("--project");
+  const project = projectIdx !== -1 ? process.argv[projectIdx + 1] : "webinar";
+  const positional = process.argv.slice(2).filter((a, i, arr) => {
+    if (a === "--project") return false;
+    if (i > 0 && arr[i - 1] === "--project") return false;
+    return true;
+  });
+  const id = positional[0];
   if (!id) {
-    console.error("Usage: tsx pipeline/record-screencast.ts <segment-id>");
+    console.error("Usage: tsx pipeline/record-screencast.ts [--project <name>] <segment-id>");
     process.exit(1);
   }
-  recordScreencast(id).catch((e) => {
+  recordScreencast(project, id).catch((e) => {
     console.error(e);
     process.exit(1);
   });

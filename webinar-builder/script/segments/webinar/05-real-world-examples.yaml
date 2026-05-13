@@ -1,0 +1,45 @@
+id: 05-real-world-examples
+title: "Real brands already using AI"
+order: 5
+visual: screencast-pip
+
+source:
+  webinar_file: "../astria-webinar.mp4"
+  transcript: "../transcript_en.srt"
+  timestamp: "00:16:50-00:18:24"   # SACKS → Nine West → Ronny Kobo → big players
+
+screencast:
+  mode: "video"
+  url: "sacksfashion.com → ronnykobo.com"
+  record_script: "scripts/record/05-real-world-examples.ts"
+
+caption:
+  eyebrow: "PROOF · 05"
+  html: |
+    Live —
+    <span class="accent">SACKS</span>, <span class="accent">Ronny Kobo</span>.
+  # Fades the right-side caption out as the big-players gallery takes over.
+  # "Finally, the big players…" starts at ~39.4 s in the Aoede TTS.
+  hide_at: 39.0
+
+narration: |
+  Let's see a few examples of brands already using AI.
+
+  SACKS rebuilt their entire homepage. The hero imagery,
+  the model shots, the product page lookbooks — all done by the professional photographer 
+  Shai Yechezkel & Miki Turgeman who have formed an AI studio called CI898. Shai and Miki helped
+  steer the brand's creative direction together, built
+  the brand's avatars and template set, and then ran hundreds of looks through it.
+  They're already done two collections with AI.
+
+  Ronny Kobo is another example of a Paris based designer. You can see the difference in styling
+  and how the branding gets applied translated into the visuals.
+
+  Finally the big players such as Mango, H&M, Zara — are all doing the same
+  thing, producing both campaigns and lookbooks with AI. The world is
+  already implementing AI. What remains is to direct it well, scale it
+  up, and do it precisely and custom to each brand's identity.
+
+avatar:
+  emotion: "matter-of-fact"
+  image_url: "https://mp.astria.ai/t9ymjlh1mwv9zj7sf26wypbqs7si"

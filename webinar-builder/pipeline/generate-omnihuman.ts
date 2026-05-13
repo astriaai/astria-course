@@ -85,12 +85,13 @@ async function download(url: string, dest: string) {
 }
 
 export async function generateOmniHuman(
+  project: string,
   segmentId: string,
   audioUrl: string,
   imageUrl: string,
   version: OmniHumanVersion = "v1"
 ): Promise<string> {
-  const avatarDir = join(ROOT, "assets", "avatars");
+  const avatarDir = join(ROOT, "assets", "avatars", project);
   mkdirSync(avatarDir, { recursive: true });
   const key = cacheKey(audioUrl, imageUrl, version);
   const cached = join(avatarDir, `${segmentId}.${key}.mp4`);
@@ -117,12 +118,19 @@ export async function generateOmniHuman(
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const [id, audio, image, version = "v1"] = process.argv.slice(2);
+  const projectIdx = process.argv.indexOf("--project");
+  const project = projectIdx !== -1 ? process.argv[projectIdx + 1] : "webinar";
+  const positional = process.argv.slice(2).filter((a, i, arr) => {
+    if (a === "--project") return false;
+    if (i > 0 && arr[i - 1] === "--project") return false;
+    return true;
+  });
+  const [id, audio, image, version = "v1"] = positional;
   if (!id || !audio || !image) {
-    console.error("Usage: tsx pipeline/generate-omnihuman.ts <segment-id> <audio_url> <image_url> [v1|v1.5]");
+    console.error("Usage: tsx pipeline/generate-omnihuman.ts [--project <name>] <segment-id> <audio_url> <image_url> [v1|v1.5]");
     process.exit(1);
   }
-  generateOmniHuman(id, audio, image, version as OmniHumanVersion).catch((e) => {
+  generateOmniHuman(project, id, audio, image, version as OmniHumanVersion).catch((e) => {
     console.error(e);
     process.exit(1);
   });
