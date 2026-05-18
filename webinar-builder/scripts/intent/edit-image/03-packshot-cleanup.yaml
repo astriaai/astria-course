@@ -1,0 +1,17 @@
+id: 03-packshot-cleanup
+narration_anchors:
+  0.0: Land on /prompts (Image mode default)
+  3.0: Upload ref-bag-burgundy-ugly.jpg
+  8.0: Click prompt textbox + start typing
+  30.0: Finish typing
+  34.0: Click Generate
+  40.0: Hover result tile
+  50.0: End
+
+prompt_text: |
+  clean studio packshot of this handbag, plain #F2F2F2 background, flat lighting, no shadows.
+
+notes: |
+  Reference: distilled from Astria pack #4566 prompt id 40149291 ("3D packshot - bag").
+  Original is ~200 lines; this is ~95 characters. Demonstrates the minimal-prompt
+  punchline.

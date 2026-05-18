@@ -1,0 +1,36 @@
+id: 04-faqs
+title: "FAQs"
+order: 4
+visual: presenter-slide
+
+slide:
+  eyebrow: "FAQ"
+  title_html: |
+    Three things to
+    <span class="accent">know</span>.
+  bullets:
+    - "Surgical, not creative — Edit's strongest move is <span class=\"accent\">removing or replacing one thing</span>, not reimagining the whole image."
+    - "Minimal prompts win — say what changes. <span class=\"accent\">\"Remove X, keep everything else exact.\"</span> Long prompts confuse the model."
+    - "Use it as a prep step — strip styling, clean references, isolate subjects before packshots, training, or video. Edit is the <span class=\"accent\">first link in the chain</span>."
+  bullet_starts: [3.0, 14.0, 26.0]
+
+narration: |
+  Three things worth knowing.
+
+  Surgical, not creative. Edit's strongest move is removing or
+  replacing one thing — a pair of shoes, a kitchen table, a logo.
+  Don't ask it to reimagine the whole image.
+
+  Minimal prompts win. Say what changes. Remove X, keep everything
+  else exact. The longer the prompt, the more the model has to ignore.
+
+  Use it as a prep step. Strip styling before training a face.
+  Clean references before generating packshots. Isolate subjects
+  before video. Edit is the first link in the chain — the rest of
+  Astria starts working better when the inputs are clean.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2,  volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 3.0,  volume: 0.45 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 14.0, volume: 0.45 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 26.0, volume: 0.45 }

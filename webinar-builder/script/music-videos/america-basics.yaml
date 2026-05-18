@@ -1,0 +1,121 @@
+# America Basics — marketing music video (artboard-driven, 2 acts)
+#
+#   tsx pipeline/generate-music-wavespeed.ts   -> assets/music/america-basics/track.mp3
+#   tsx pipeline/generate-artboard.ts          -> assets/artboard/america-basics/artboard-actN.jpg
+#   tsx pipeline/build-music-video.ts          -> out/america-basics/final.mp4
+#
+# Technique: for each act, GPT Image 2 (via the Astria CLI) renders the act's
+# `artboard` — a header line + 16 numbered shots, the /artboard skill format —
+# into a 4x4 (16-tile) cinematic storyboard. seedance2_fast then animates that
+# artboard into a dynamic 15s video using the act's `prompt`. Two acts → ~30s.
+
+project: america-basics
+
+music:
+  is_instrumental: false
+  target_duration: 30
+  prompt: >
+    Melodic electronic, warm analog pads with a soft filtered intro that slowly
+    builds; a clean punchy kick and round sub-bass enter mid-track; layered synth
+    arpeggios and airy plucks; modern fashion-campaign runway energy, elegant and
+    restrained; major key, around 120 BPM; quiet and intimate at the start,
+    confident and full by the end.
+  lyrics: |
+    [Verse]
+    Soft on the skin, easy and true
+    Made for the everyday, made for you
+    [Chorus]
+    Basics, basics — all you need
+    Simple and timeless, room to breathe
+
+packs:
+  - basic-shirt
+  - basic-pants2
+  - basic-jacket-men
+
+video:
+  seedance_model: "seedance2_fast_480p"
+  aspect_ratio: "16:9"
+  artboard_resolution: "4K"     # gpt-image-2 render resolution for the artboards
+
+  # Cast — faceid tune tokens, referenced inline in each act's `artboard` shots.
+  # Tokens come from the America Basics packs on workspace 54.
+  #   girl  <faceid:3982728:1.0>  | shirt 3979127  skirt 3979114  shoes 3979109
+  #   woman <faceid:3979589:1.0>  | shirt 3979270  pants 3979266  shoes 3988313
+  #   man   <faceid:3979439:1.0>  | jacket 3979137 pants 3979124  shoes 3979111
+
+  acts:
+    # prompt   = motion prose for the Seedance video pass.
+    # artboard = header + 16 numbered shots for gpt-image-2 (the /artboard skill
+    #            format); the script appends `--gpt_quality high`.
+    - id: 1
+      name: "Act I — studio"
+      duration: 15
+      trim_start: 2.4         # drop the artboard-grid lead-in before it resolves
+      prompt: >
+        A cinematic America Basics studio fashion film featuring all three
+        models together on a clean seamless off-white studio backdrop with soft
+        diffused light. Calm and elegant: gentle breathing and weight shifts,
+        warm natural expressions, soft eye contact and blinks, hair settling.
+        Slow cinematic camera that glides between long shots, medium shots and
+        closeups, with tasteful rack-focus and shallow depth of field.
+        Restrained, premium, editorial.
+      artboard: |
+        A 4x4 storyboard artboard — 16 cinematic tiles, each a 16:9 film still,
+        numbered 1-16, read left-to-right then top-to-bottom. The same three
+        America Basics models, their wardrobe, one studio location and one
+        warm-neutral color grade across every tile. Clean off-white seamless
+        backdrop, soft diffused light, gentle film grain.
+
+        1) Close-up of the <faceid:3982728:1.0> girl in her <faceid:3979127:1.0> shirt, a soft smile breaking as she looks to camera. Off-white seamless studio, soft diffused light, warm-neutral grade, gentle film grain.
+        2) Long shot of the same girl, full body, wearing the <faceid:3979127:1.0> shirt, <faceid:3979114:1.0> skirt and <faceid:3979109:1.0> shoes, shifting her weight onto one hip.
+        3) Close-up of the <faceid:3979589:1.0> woman in her <faceid:3979270:1.0> shirt, her eyes lifting to camera, a calm half-smile, shallow depth of field.
+        4) Extreme close-up of the woman's hands smoothing the waistband of her <faceid:3979266:1.0> pants, fabric weave and stitching visible.
+        5) Medium shot of the <faceid:3979439:1.0> man in his <faceid:3979137:1.0> jacket, half-turning to camera as one hand settles the collar.
+        6) Long shot of all three together — the <faceid:3982728:1.0> girl, the <faceid:3979589:1.0> woman and the <faceid:3979439:1.0> man — standing in an easy line on the seamless backdrop.
+        7) Close-up of the <faceid:3982728:1.0> girl laughing, her head tipping, hair settling across her cheek.
+        8) Medium shot of the <faceid:3979589:1.0> woman stepping slowly toward camera in her <faceid:3979270:1.0> shirt and <faceid:3979266:1.0> pants, the background falling soft.
+        9) Extreme close-up of the <faceid:3979439:1.0> man's face, a slow blink and a small smile, rim light along his jaw.
+        10) Long low-angle shot of the man, full body in the <faceid:3979137:1.0> jacket, <faceid:3979124:1.0> pants and <faceid:3979111:1.0> shoes, hands easing into his pockets.
+        11) Medium shot of the <faceid:3982728:1.0> girl and the <faceid:3979589:1.0> woman side by side, turning to share a warm glance.
+        12) Close-up over the shoulder of the <faceid:3979589:1.0> woman as she turns her head back to camera, soft focus falloff behind her.
+        13) Medium top-view of the <faceid:3982728:1.0> girl from the shoulders up, hands smoothing her <faceid:3979114:1.0> skirt, eyes flicking up to camera.
+        14) Extreme close-up of the woman's feet in the <faceid:3988313:1.0> shoes, one foot stepping forward, leather grain and seams sharp.
+        15) Medium shot, shoulders to knee, of all three models mid weight-shift, garments catching the soft studio light.
+        16) Extreme long shot — the <faceid:3982728:1.0> girl, <faceid:3979589:1.0> woman and <faceid:3979439:1.0> man small and composed against the vast off-white seamless, the quiet closing frame.
+    - id: 2
+      name: "Act II — on location"
+      duration: 15
+      trim_start: 0.5         # drop the brief artboard-grid flash at the start
+      prompt: >
+        A cinematic America Basics on-location fashion film featuring all three
+        models — the girl on a green tennis court, the woman on an urban
+        basketball court among brick high-rises, the man in a concrete skate
+        park. Energetic and alive: dynamic strides and turns, a tennis swing,
+        playful confident body language, expressive faces, laughter, darting
+        eyes and quick glances to camera. Fast, lively cinematic camera cutting
+        between punchy closeups, medium and wide shots, strong depth of field
+        and rack-focus, motion and momentum. Bold, joyful, editorial.
+      artboard: |
+        A 4x4 storyboard artboard — 16 cinematic tiles, each a 16:9 film still,
+        numbered 1-16, read left-to-right then top-to-bottom. The same three
+        America Basics models and wardrobe across every tile, on location over
+        three open-air courts under one bright golden-hour color grade.
+        Energetic and lively, with motion blur and soft film grain.
+
+        1) Close-up of the <faceid:3982728:1.0> girl on a green tennis court, wind lifting her hair, a bright grin to camera. Golden-hour light, soft film grain, energetic open-air atmosphere.
+        2) Long shot of the same girl, full body in her <faceid:3979127:1.0> shirt, <faceid:3979114:1.0> skirt and <faceid:3979109:1.0> shoes, striding fast along the tennis court baseline.
+        3) Close-up of the <faceid:3979589:1.0> woman on an urban basketball court among brick high-rises, glancing over her shoulder to camera with a confident smile.
+        4) Medium low-angle shot of the woman mid-stride in her <faceid:3979270:1.0> shirt and <faceid:3979266:1.0> pants, pushing off a painted court line.
+        5) Extreme close-up of the <faceid:3982728:1.0> girl's hand and forearm whipping a tennis swing, motion blur trailing the racket.
+        6) Long shot of the <faceid:3979439:1.0> man in a concrete skate park, full body in his <faceid:3979137:1.0> jacket, <faceid:3979124:1.0> pants and <faceid:3979111:1.0> shoes, riding low across a ramp.
+        7) Medium shot of the <faceid:3979589:1.0> woman rising for a jump shot, the basketball leaving her fingertips, brick towers blurred behind.
+        8) Close-up of the <faceid:3979439:1.0> man in his <faceid:3979137:1.0> jacket, mid-laugh, darting a quick glance to camera, rim light on his face.
+        9) Extreme long shot of the skate park — the <faceid:3979439:1.0> man small against the concrete bowl and open sky, carving a wide turn.
+        10) Medium shot of the <faceid:3982728:1.0> girl spinning on the tennis court, her <faceid:3979114:1.0> skirt flaring with the motion.
+        11) Close-up of the <faceid:3979589:1.0> woman in her <faceid:3979270:1.0> shirt, breathless and smiling, hair flying, eyes bright to camera.
+        12) Long shot of all three where the courts meet — the <faceid:3982728:1.0> girl, the <faceid:3979589:1.0> woman and the <faceid:3979439:1.0> man walking toward camera in a confident line.
+        13) Medium shot of the <faceid:3979439:1.0> man snapping the skateboard up into his hand, a playful look to camera.
+        14) Extreme close-up of the <faceid:3979439:1.0> man's <faceid:3979111:1.0> shoes landing on the board, grip-tape and laces sharp, dust kicking up.
+        15) Medium shot, shoulders to knee, of the <faceid:3979589:1.0> woman in her <faceid:3988313:1.0> shoes dribbling low, the ball frozen in motion blur.
+        16) Extreme long shot — the <faceid:3982728:1.0> girl, <faceid:3979589:1.0> woman and <faceid:3979439:1.0> man small against the courts and golden sky, mid-celebration, the bold closing frame.

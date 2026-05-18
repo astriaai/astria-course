@@ -17,6 +17,10 @@
     "inspect-webinar-all": "tsx pipeline/inspect-webinar-all.ts",
     "stitch": "tsx pipeline/stitch.ts",
     "stitch:vst": "tsx pipeline/stitch.ts --project video-style-transfer",
+    "music": "tsx pipeline/generate-music-wavespeed.ts",
+    "pull-packs": "tsx pipeline/pull-pack-images.ts",
+    "artboard": "tsx pipeline/generate-artboard.ts",
+    "music-video": "tsx pipeline/build-music-video.ts",
     "preview": "hyperframes preview",
     "render": "hyperframes render",
     "lint": "hyperframes lint"

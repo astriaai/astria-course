@@ -1,0 +1,17 @@
+id: 00-intro
+title: "Astria — Edit (TV intro)"
+order: 0
+visual: tv-intro
+
+duration: 10.0
+narration: ""
+
+intro:
+  background_video: "assets/avatars/edit-image/00-intro-seedance.mp4"
+  background_image: "assets/avatars/edit-image/intro-fullbody-wide.jpg"
+  title_html: "ASTRIA"
+  subtitle_html: "Edit"
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.6, volume: 0.6 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 2.0, volume: 0.4 }

@@ -1,0 +1,30 @@
+id: 01-showcase
+title: "Two clean-input edits"
+order: 1
+visual: video-showcase
+
+# Two stills side-by-side — a teaser for the workflow segments that follow.
+# LEFT: editorial shot, shoes removed (template cleanup).
+# RIGHT: phone snapshot of a bag, turned into a clean studio packshot.
+showcase:
+  videos:
+    - src: "assets/results/edit-image/feet-barefoot.jpg"
+      label: "REMOVE · KEEP THE REST"
+    - src: "assets/results/edit-image/packshot-clean-from-iphone.jpg"
+      label: "ONE-LINE STUDIO PACKSHOT"
+
+caption:
+  eyebrow: "ASTRIA EDIT"
+  html: |
+    Surgical edits.
+    <span class="accent">Clean inputs</span> for everything that comes next.
+
+narration: |
+  Astria Edit isn't a creative tool. It's a prep tool. Two examples.
+  On the left — an editorial shot with the shoes stripped out. On the
+  right — a phone snapshot of a bag, cleaned into a studio packshot.
+  Same image, minus the noise. Ready for whatever you generate next.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.55 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 5.5, volume: 0.4 }

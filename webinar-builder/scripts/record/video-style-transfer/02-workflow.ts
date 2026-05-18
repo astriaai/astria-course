@@ -26,7 +26,9 @@
 import type { RecordScript } from "../../../pipeline/record-screencast.js";
 import { resolve } from "node:path";
 
-const BASE_URL = process.env.ASTRIA_BASE_URL ?? "https://www.astria.ai";
+// UI hostname — ASTRIA_BASE_URL is the API URL (https://api.astria.ai) and
+// returns JSON on /prompts. The recorder always drives the browser UI.
+const BASE_URL = process.env.ASTRIA_UI_URL ?? "https://www.astria.ai";
 
 const DRIVING_VIDEO_PATH = resolve(
   process.cwd(),

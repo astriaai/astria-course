@@ -1,0 +1,17 @@
+id: 02-strip-shoes
+narration_anchors:
+  0.0: Land on /prompts (Image mode default)
+  3.0: Upload feet-heels-source.jpg
+  8.0: Click prompt textbox + start typing
+  22.0: Finish typing
+  26.0: Click Generate
+  34.0: Hover result tile
+  50.0: End
+
+prompt_text: |
+  remove the shoes, keep her barefoot. preserve everything else exactly.
+
+notes: |
+  No Generate click results are captured in the recording — clicking is the
+  punctuation moment. Async job completes off-screen; the showcase still
+  delivers the "after" payoff.

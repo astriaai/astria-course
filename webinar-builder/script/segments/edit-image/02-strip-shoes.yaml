@@ -1,0 +1,61 @@
+id: 02-strip-shoes
+title: "Strip the styling"
+order: 2
+visual: screencast-pip
+
+screencast:
+  mode: "image"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/edit-image/02-strip-shoes.ts"
+
+caption:
+  eyebrow: "STRIP THE STYLING"
+  html: |
+    The shoes travel with the face.
+    <span class="accent">Strip them</span> first.
+
+slide:
+  bullets:
+    - "Drop the input image"
+    - "Type one minimal sentence"
+    - "Hit generate"
+    - "Same pose. Shoes gone."
+  # Paced to the ~50s recorder timeline.
+  bullet_starts: [3.0, 9.0, 25.0, 36.0]
+
+# SFX — whoosh at entry, ding per bullet reveal, click on Generate.
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2,  volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 3.0,  volume: 0.45 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 9.0,  volume: 0.45 }
+  - { src: "assets/sfx/click-subtle.mp3", start: 25.0, volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 25.0, volume: 0.45 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 36.0, volume: 0.45 }
+
+# Marker highlights — luxe-gold strokes timed to the UI moments.
+# Coordinates verified against capture frames at 1600×900:
+#   - "+" upload tile centers at ≈ (350, 105) with r≈55
+#   - prompt textarea sits ≈ y=165, full width, center cx≈800
+#   - blue Generate submit (round) centers at ≈ (1336, 257) with r≈26
+markers:
+  # Bullet 1 (t=3) → "+" upload tile
+  - { start: 3.0,  duration: 5.0,  shape: circle,    cx: 350,  cy: 105, r: 75,  style: luxe-gold }
+  # Bullet 2 (t=9) → prompt textarea (underline beneath the typed text)
+  - { start: 9.0,  duration: 14.0, shape: underline, cx: 800,  cy: 195, w: 800, style: luxe-cream }
+  # Bullet 3 (t=25) → Generate submit (blue circle)
+  - { start: 24.5, duration: 4.0,  shape: circle,    cx: 1336, cy: 257, r: 45,  style: luxe-gold }
+
+narration: |
+  Edit is for cleaning inputs. Watch.
+
+  Drop an image into Astria. Here — a fashion shot, woman on a pink
+  chair, black heels.
+
+  Type one sentence. Remove the shoes. Keep her barefoot. Preserve
+  everything else.
+
+  Hit generate.
+
+  Same pose, same dress, same chair, same light — shoes gone. This is
+  what makes a reference clean. When you train a face or generate from
+  this image later, the heels won't travel with it.

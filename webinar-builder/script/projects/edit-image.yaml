@@ -1,0 +1,40 @@
+# Project manifest — Astria Edit (NanoBanana 3.1) feature tutorial.
+# Standalone tutorial under the bi-weekly cadence. Cool hipster-casual presenter,
+# concrete-loft aesthetic — distinct from VST (elegant studio) and 3d-packshots
+# (high-fashion editorial).
+
+meta:
+  title: "Astria · Edit"
+  presenter: "Astria"
+  resolution: "1920x1080"
+  fps: 30
+
+defaults:
+  tts:
+    provider: "gemini"
+    voice: "Aoede"
+    model: "gemini-3.1-flash-tts-preview"
+
+  music:
+    src: "assets/music/luxe-pad.mp3"
+    volume: 0.12
+
+  # Cool hipster-casual presenter — cream chunky knit, vintage Levi's, gold hoops,
+  # concrete loft + industrial window + trailing pothos behind her. Soft north light.
+  # Note: tmpfiles URLs expire ~1h; re-upload from assets/avatars/edit-image/avatar-portrait.jpg
+  # via `edit-image-gemini.ts --upload` when needed.
+  avatar:
+    image_url: "https://tmpfiles.org/dl/wpwVwgkAU09i/avatar-portrait.jpg"
+    engine: "infinitetalk"
+    resolution: "720p"
+    video_prompt: >-
+      Subtle natural micro-expressions, relaxed confident smile of a creative
+      director showing her work, very small head movements, looking at camera
+      with friendly warmth, no hand gestures, minimal upper-body motion.
+
+segments:
+  - 00-intro              # TV-show open: hipster-casual Seedance dolly-in (~10s)
+  - 01-showcase           # Teaser — two cleanup result stills side-by-side (~14s)
+  - 02-strip-shoes        # Astria UI screencast — remove the shoes (~50s)
+  - 03-packshot-cleanup   # Astria UI screencast — clean packshot from iPhone snap (~52s)
+  - 04-faqs               # FAQ — surgical not creative, minimal prompts, prep step (~30s)

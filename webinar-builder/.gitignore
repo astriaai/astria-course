@@ -1,5 +1,6 @@
 node_modules/
 .env
+.DS_Store
 renders/
 out/
 .hyperframes/
@@ -7,9 +8,15 @@ out/
 .work/
 transcript.json
 storageState.json
+# Generated media artifacts — all regenerable, never commit.
 assets/avatars/**/*.mp4
 assets/avatars/**/*.mp3
+assets/avatars/edit-image/
 assets/audio/**/*.wav
 assets/captures/**/*.mp4
 assets/results/**/*.mp4
+assets/results/edit-image/
+assets/inputs/
+assets/artboard/
+assets/music/**/*.mp3
 !assets/**/.gitkeep
