@@ -1,0 +1,44 @@
+id: 02-workspace-references
+title: "Review the workspace references"
+order: 2
+visual: screencast-pip
+duration: 48.0
+
+screencast:
+  mode: "video"
+  url: "astria.ai/packs"
+  record_script: "scripts/record/artboard-2/02-workspace-references.ts"
+
+caption:
+  eyebrow: "STEP 1"
+  html: |
+    Start with the
+    <span class="accent">references</span>.
+
+slide:
+  bullets:
+    - "Open the workspace"
+    - "Check the cast references"
+    - "Check wardrobe references"
+    - "Use names in the prompt"
+  bullet_starts: [3.0, 13.0, 24.0, 37.0]
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.42 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 3.0, volume: 0.32 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 13.0, volume: 0.28 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 24.0, volume: 0.28 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 37.0, volume: 0.25 }
+
+narration: |
+  Let's get to work. Start in the workspace that already has the product
+  templates and references you want to use.
+
+  First check the cast. These are the people the video should keep
+  consistent from shot to shot.
+
+  Then check the wardrobe. These garment references are the clothes we
+  want visible across the final film.
+
+  When you write the prompt, mention the references in plain language:
+  the girl, the woman, the man, the shirt, the pants, and the jacket.

@@ -1,0 +1,40 @@
+id: 06-review-first-video
+title: "Review the first video"
+order: 6
+visual: artboard-video-review
+duration: 28.0
+
+review:
+  videos:
+    - src: "assets/results/america-basics/clip-act1-gop30.mp4"
+      label: "Generated video · pass 1"
+      start: 0.0
+      duration: 28.0
+  artboards:
+    - src: "assets/artboard/america-basics/artboard-act2.jpg"
+      label: "Reference artboard"
+      start: 0.0
+      duration: 28.0
+  tile_beats:
+    - { start: 1.0, duration: 5.0, artboard: 0, tile: 1, label: "Match the world", note: "Check cast, wardrobe, location, and light." }
+    - { start: 7.0, duration: 5.0, artboard: 0, tile: 4, label: "Track motion", note: "Look for walking, camera movement, and clear cuts." }
+    - { start: 13.0, duration: 5.0, artboard: 0, tile: 12, label: "Check continuity", note: "The same campaign should survive across shots." }
+    - { start: 19.0, duration: 5.0, artboard: 0, tile: 16, label: "End wide", note: "A wide payoff makes the video feel intentional." }
+
+caption:
+  eyebrow: "FIRST VIDEO"
+  html: |
+    Compare the clip
+    to the <span class="accent">plan</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.36 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 7.0, volume: 0.24 }
+
+narration: |
+  Now review the video. Do not only ask if it looks cool. Ask if it
+  follows the artboard.
+
+  Check whether the same characters and garments stay visible, whether
+  the cuts feel fast enough, and whether the shots still feel like one
+  campaign.

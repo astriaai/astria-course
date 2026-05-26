@@ -1,0 +1,44 @@
+# Alternative Astria Artboard tutorial draft.
+# Goal: a clearer beginner story from references → /artboard → video →
+# same-chat mood edit → second video, without avatar rendering during review.
+
+meta:
+  title: "Astria · Artboard 2"
+  presenter: "Astria"
+  resolution: "1920x1080"
+  fps: 30
+
+defaults:
+  tts:
+    provider: "gemini"
+    voice: "Aoede"
+    model: "gemini-3.1-flash-tts-preview"
+
+  music:
+    src: "assets/music/luxe-pad.mp3"
+    volume: 0.10
+
+  background_videos:
+    - "assets/results/america-basics/clip-act1-gop30.mp4"
+    - "assets/results/america-basics/clip-act2-gop30.mp4"
+
+  avatar:
+    image_url: "assets/avatars/yuli.jpg"
+    engine: "infinitetalk"
+    resolution: "720p"
+    video_prompt: >-
+      Subtle natural micro-expressions and very small head movements, calm
+      steady pose, looking directly at the camera, no hand gestures.
+
+segments:
+  - 00-result-promise
+  - 01-artboard-roadmap
+  - 02-workspace-references
+  - 03-create-studio-artboard
+  - 04-review-studio-artboard
+  - 05-generate-video
+  - 06-review-first-video
+  - 07-edit-moody-artboard
+  - 08-review-moody-artboard
+  - 09-review-moody-video
+  - 10-closing-tips

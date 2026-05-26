@@ -73,7 +73,8 @@ interface SegmentYaml {
     | "avatar-hero"
     | "video-showcase"
     | "tv-intro"
-    | "artboard-video-review";
+    | "artboard-video-review"
+    | "artboard-tile-review";
   /** Override the audio-derived duration. Used for visual-only segments like the TV intro. */
   duration?: number;
   /** TV-intro layout config — full-bleed image or video with serif title lockup. */
@@ -545,6 +546,28 @@ function renderLayout(project: string, projectCfg: ProjectYaml, segment: Segment
         );
       })
       .join("\n        ");
+    vars.REVIEW_ARTBOARDS_HTML = review.artboards
+      .map((a, i) => {
+        const label = a.label ? `<div class="board-label">${a.label}</div>` : "";
+        return (
+          `<div class="board-layer clip" data-board-index="${i}" data-start="${a.start.toFixed(2)}" data-duration="${a.duration.toFixed(
+            2,
+          )}" data-track-index="${80 + i}">\n` +
+          `          ${label}\n` +
+          `          <img class="board-image" src="${a.src}" alt="" />\n` +
+          `        </div>`
+        );
+      })
+      .join("\n        ");
+    vars.REVIEW_BEATS_JSON = JSON.stringify(review.tile_beats);
+    vars.CAPTION_EYEBROW = segment.caption?.eyebrow ?? "";
+    vars.CAPTION_HTML = segment.caption?.html ?? "";
+    vars.AVATAR_MEDIA = "";
+  } else if (segment.visual === "artboard-tile-review") {
+    const review = segment.review;
+    if (!review?.artboards?.length || !review.tile_beats?.length) {
+      throw new Error(`segment ${segment.id}: artboard-tile-review requires review.artboards and review.tile_beats`);
+    }
     vars.REVIEW_ARTBOARDS_HTML = review.artboards
       .map((a, i) => {
         const label = a.label ? `<div class="board-label">${a.label}</div>` : "";

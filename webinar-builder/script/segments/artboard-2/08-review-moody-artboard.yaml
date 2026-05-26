@@ -1,0 +1,35 @@
+id: 08-review-moody-artboard
+title: "Review the moody artboard"
+order: 8
+visual: artboard-tile-review
+duration: 30.0
+
+review:
+  artboards:
+    - src: "assets/artboard/america-basics/artboard-act2.jpg"
+      label: "Refined artboard"
+      start: 0.0
+      duration: 30.0
+  tile_beats:
+    - { start: 1.0, duration: 5.0, artboard: 0, tile: 1, label: "New tone", note: "The same cast now lives in a warmer outdoor world." }
+    - { start: 7.0, duration: 5.0, artboard: 0, tile: 4, label: "Location", note: "The background and light now carry the mood." }
+    - { start: 13.0, duration: 5.0, artboard: 0, tile: 7, label: "Movement", note: "Action tiles help the video feel fast and cinematic." }
+    - { start: 19.0, duration: 5.0, artboard: 0, tile: 14, label: "Details", note: "Detail shots keep the edit from feeling repetitive." }
+
+caption:
+  eyebrow: "REFINED BOARD"
+  html: |
+    Same subject,
+    stronger <span class="accent">atmosphere</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.36 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 7.0, volume: 0.24 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 19.0, volume: 0.24 }
+
+narration: |
+  Review the refined artboard the same way. Look for the new mood, but
+  also check that the original references did not disappear.
+
+  The best refinement changes the atmosphere without losing the people,
+  the clothes, or the shot variety.

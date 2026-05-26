@@ -1,0 +1,44 @@
+id: 03-create-studio-artboard
+title: "Ask the assistant for an artboard"
+order: 3
+visual: screencast-pip
+duration: 52.0
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/artboard-2/03-create-studio-artboard.ts"
+
+caption:
+  eyebrow: "STEP 2"
+  html: |
+    Type <span class="accent">/artboard</span>
+    with a plain brief.
+
+slide:
+  bullets:
+    - "Open Astria Assistant"
+    - "Type /artboard"
+    - "Describe the film"
+    - "Choose 16:9"
+    - "Review the generated prompt"
+  bullet_starts: [3.0, 10.0, 18.0, 31.0, 41.0]
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.42 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 10.0, volume: 0.30 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 31.0, volume: 0.28 }
+
+narration: |
+  Open Astria Assistant and type slash artboard. Then describe the film
+  in normal words.
+
+  Ask for an editorial fashion video on a white studio background. Name
+  the references you want included: the cast, the shirt, the pants, and
+  the jacket.
+
+  Choose sixteen by nine. The assistant expands your short brief into a
+  detailed artboard prompt, with a mix of wide shots, medium shots,
+  close-ups, and product details.
+
+  That generated prompt is what creates the first artboard.

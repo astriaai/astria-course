@@ -1,0 +1,40 @@
+id: 05-generate-video
+title: "Generate video from the artboard"
+order: 5
+visual: screencast-pip
+duration: 40.0
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/artboard-2/05-generate-video.ts"
+
+caption:
+  eyebrow: "STEP 3"
+  html: |
+    Reuse the prompt
+    in <span class="accent">Video</span>.
+
+slide:
+  bullets:
+    - "Copy the artboard prompt"
+    - "Switch to Video"
+    - "Attach the artboard as reference"
+    - "Choose Seedance2 Fast"
+    - "Set 15 seconds"
+  bullet_starts: [3.0, 10.0, 17.0, 27.0, 34.0]
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.42 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 10.0, volume: 0.28 }
+  - { src: "assets/sfx/click-subtle.mp3", start: 34.0, volume: 0.24 }
+
+narration: |
+  When you are happy with the artboard, use it to generate video.
+
+  Copy the same artboard prompt into the Video tab, but remove the word
+  artboard. Attach the artboard image as a reference image, not as a
+  first frame.
+
+  Choose Seedance2 Fast, either 480p or 720p, set the duration to
+  fifteen seconds, and generate.

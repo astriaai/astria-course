@@ -1,0 +1,42 @@
+id: 04-review-studio-artboard
+title: "Review the first artboard tiles"
+order: 4
+visual: artboard-tile-review
+duration: 34.0
+
+review:
+  artboards:
+    - src: "assets/artboard/america-basics/artboard-act1.jpg"
+      label: "First artboard"
+      start: 0.0
+      duration: 34.0
+  tile_beats:
+    - { start: 1.0, duration: 5.0, artboard: 0, tile: 16, label: "Long shot", note: "Use wide frames to establish all characters and the full outfit." }
+    - { start: 7.0, duration: 5.0, artboard: 0, tile: 6, label: "Medium shot", note: "Medium frames show the group and keep wardrobe readable." }
+    - { start: 13.0, duration: 5.0, artboard: 0, tile: 1, label: "Close-up", note: "Close shots help the edit feel cinematic, not just catalog style." }
+    - { start: 19.0, duration: 5.0, artboard: 0, tile: 14, label: "Detail shot", note: "Product details give fast videos useful cutaway moments." }
+    - { start: 25.0, duration: 5.0, artboard: 0, tile: 15, label: "Continuity", note: "Check that the same cast and wardrobe remain consistent." }
+
+caption:
+  eyebrow: "REVIEW"
+  html: |
+    Think like an
+    <span class="accent">editor</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.38 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 1.0, volume: 0.25 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 7.0, volume: 0.25 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 13.0, volume: 0.25 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 19.0, volume: 0.25 }
+
+narration: |
+  Once the artboard is ready, open it and review the tiles before you
+  generate video.
+
+  A good fashion video needs camera variety. Look for long shots that
+  establish the full group, medium shots that show wardrobe, close-ups
+  for emotion, and detail shots for fast cutaways.
+
+  If the artboard already has that range, it is ready to become a video
+  reference.

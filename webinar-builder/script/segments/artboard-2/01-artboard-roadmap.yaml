@@ -1,0 +1,33 @@
+id: 01-artboard-roadmap
+title: "Artboards are the shot plan"
+order: 1
+visual: video-showcase
+duration: 24.0
+
+showcase:
+  videos:
+    - src: "assets/artboard/america-basics/artboard-act1.jpg"
+      label: "STUDIO BOARD"
+    - src: "assets/artboard/america-basics/artboard-act2.jpg"
+      label: "MOODY OUTDOOR BOARD"
+
+caption:
+  eyebrow: "THE PLAN"
+  html: |
+    ChatGPT creates
+    one <span class="accent">4x4 image</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.42 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 8.0, volume: 0.28 }
+
+narration: |
+  To get there, we use artboards created by ChatGPT in a single image.
+  Each artboard is a four by four grid. Sixteen frames, one image.
+
+  This gives us a quick preview of the movie before we generate the
+  video. We can check the cast, the wardrobe, the location, the mood,
+  and the camera variety.
+
+  For beginners, this is the important idea: the artboard is your shot
+  plan. It tells the video model what world it should preserve.

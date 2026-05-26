@@ -1,0 +1,32 @@
+id: 00-result-promise
+title: "Create a cinematic fashion video"
+order: 0
+visual: video-showcase
+duration: 24.0
+
+showcase:
+  videos:
+    - src: "assets/results/america-basics/clip-act1-gop30.mp4"
+      label: "FIRST VIDEO PASS"
+    - src: "assets/results/america-basics/clip-act2-gop30.mp4"
+      label: "MOODY OUTDOOR PASS"
+
+caption:
+  eyebrow: "ARTBOARD TO VIDEO"
+  html: |
+    Fast-paced fashion shots,
+    guided by <span class="accent">references</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.48 }
+
+narration: |
+  Today we are going to create a cinematic fashion video with fast-paced
+  shots, consistent characters, and real wardrobe references.
+
+  The goal is not one random clip. The goal is a repeatable workflow:
+  start from references, plan the shots with an artboard, then use that
+  same artboard to guide video.
+
+  We will make a first version, then edit the atmosphere into a darker
+  outdoor mood with greenery.

@@ -1,0 +1,40 @@
+id: 09-review-moody-video
+title: "Review the moody video"
+order: 9
+visual: artboard-video-review
+duration: 28.0
+
+review:
+  videos:
+    - src: "assets/results/america-basics/clip-act2-gop30.mp4"
+      label: "Generated video · pass 2"
+      start: 0.0
+      duration: 28.0
+  artboards:
+    - src: "assets/artboard/america-basics/artboard-act2.jpg"
+      label: "Refined artboard"
+      start: 0.0
+      duration: 28.0
+  tile_beats:
+    - { start: 1.0, duration: 5.0, artboard: 0, tile: 7, label: "Action", note: "Does the video inherit the energy of the board?" }
+    - { start: 7.0, duration: 5.0, artboard: 0, tile: 12, label: "Continuity", note: "Are the cast and wardrobe still stable?" }
+    - { start: 13.0, duration: 5.0, artboard: 0, tile: 15, label: "Coverage", note: "Do we get useful medium and detail moments?" }
+    - { start: 19.0, duration: 5.0, artboard: 0, tile: 16, label: "Payoff", note: "The final wide shot should feel like the same campaign." }
+
+caption:
+  eyebrow: "SECOND VIDEO"
+  html: |
+    The edit follows
+    the <span class="accent">new board</span>.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.36 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 13.0, volume: 0.24 }
+
+narration: |
+  Generate the second video from the refined board and review it the
+  same way.
+
+  The new clip should feel darker and more atmospheric, but still match
+  the references. The artboard is how we keep the model from drifting
+  away from the campaign.

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0b0b0c;
+        color: #f4f1ec;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background:
+          radial-gradient(58% 66% at 23% 50%, rgba(224,106,78,0.11), transparent 70%),
+          linear-gradient(135deg, #0b0b0c 0%, #191713 58%, #0b0b0c 100%);
+      }
+      .stage {
+        position: absolute;
+        inset: 64px 64px 112px 64px;
+        display: grid;
+        grid-template-columns: 1fr 520px;
+        gap: 36px;
+        z-index: 2;
+      }
+      .board-overview,
+      .tile-zoom {
+        position: relative;
+        overflow: hidden;
+        background: rgba(30,29,28,0.86);
+        box-shadow: 0 30px 90px rgba(0,0,0,0.48);
+      }
+      .board-overview {
+        height: 904px;
+      }
+      .board-layer {
+        position: absolute;
+        inset: 0;
+      }
+      .board-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .board-label {
+        position: absolute;
+        top: 24px;
+        left: 28px;
+        z-index: 5;
+        font-size: 13px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #d9b97a;
+        font-weight: 600;
+      }
+      .tile-focus {
+        position: absolute;
+        border: 3px solid #d9b97a;
+        box-shadow: 0 0 0 999px rgba(11,11,12,0.38), 0 0 30px rgba(217,185,122,0.5);
+        z-index: 6;
+        pointer-events: none;
+      }
+      .tile-zoom {
+        height: 904px;
+        display: flex;
+        flex-direction: column;
+      }
+      .tile-crop {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        background-repeat: no-repeat;
+        background-size: 400% 400%;
+      }
+      .tile-copy {
+        min-height: 170px;
+        padding: 28px 30px 30px;
+        background: rgba(11,11,12,0.74);
+      }
+      .tile-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 48px;
+        line-height: 1.04;
+        font-weight: 400;
+        color: #f4f1ec;
+      }
+      .tile-note {
+        margin-top: 14px;
+        font-size: 20px;
+        line-height: 1.38;
+        color: #a8a39a;
+      }
+      .caption {
+        position: absolute;
+        left: 64px;
+        right: 64px;
+        bottom: 38px;
+        height: 56px;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 32px;
+        z-index: 4;
+      }
+      .caption-eyebrow {
+        font-size: 14px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: #a8a39a;
+        font-weight: 600;
+      }
+      .caption-headline {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 46px;
+        line-height: 1;
+        font-weight: 400;
+        text-align: right;
+      }
+      .caption-headline .accent { color: #d9b97a; font-style: italic; }
+      {{CAPTIONS_CSS}}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{DURATION}}" data-width="1920" data-height="1080">
+      <audio id="seg-narration" class="clip" data-start="0" data-duration="{{DURATION}}" data-track-index="0" src="{{AUDIO_SRC}}" data-volume="{{NARRATION_VOLUME}}"></audio>
+      {{MUSIC_AUDIO_HTML}}
+      {{SFX_AUDIOS_HTML}}
+
+      <div class="stage">
+        <div class="board-overview" id="board-overview">
+          {{REVIEW_ARTBOARDS_HTML}}
+          <div class="tile-focus" id="tile-focus" aria-hidden="true"></div>
+        </div>
+        <div class="tile-zoom" id="tile-zoom">
+          <div class="tile-crop" id="tile-crop"></div>
+          <div class="tile-copy">
+            <div class="tile-title" id="tile-title"></div>
+            <div class="tile-note" id="tile-note"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="caption">
+        <div class="caption-eyebrow" id="caption-eyebrow">{{CAPTION_EYEBROW}}</div>
+        <div class="caption-headline" id="caption-headline">{{CAPTION_HTML}}</div>
+      </div>
+      {{CAPTIONS_HTML}}
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const beats = {{REVIEW_BEATS_JSON}};
+      const tl = gsap.timeline({ paused: true });
+      const focus = document.getElementById("tile-focus");
+      const crop = document.getElementById("tile-crop");
+      const title = document.getElementById("tile-title");
+      const note = document.getElementById("tile-note");
+      const boardImages = Array.from(document.querySelectorAll(".board-layer .board-image"));
+
+      function setBeat(beat) {
+        const tile = Math.max(1, Math.min(16, Number(beat.tile || 1))) - 1;
+        const col = tile % 4;
+        const row = Math.floor(tile / 4);
+        const img = boardImages[beat.artboard] || boardImages[0];
+        const src = img ? img.getAttribute("src") : "";
+        crop.style.backgroundImage = `url("${src}")`;
+        crop.style.backgroundPosition = `${col * 33.3333}% ${row * 33.3333}%`;
+        title.textContent = beat.label || "";
+        note.textContent = beat.note || "";
+        gsap.to(focus, {
+          left: `${col * 25}%`,
+          top: `${row * 25}%`,
+          width: "25%",
+          height: "25%",
+          duration: 0.55,
+          ease: "power3.out",
+        });
+        gsap.fromTo(crop, { scale: 1.05 }, { scale: 1, duration: 0.7, ease: "power3.out" });
+      }
+
+      tl.from(".board-overview", { opacity: 0, y: 24, duration: 0.75, ease: "power3.out" }, 0.15);
+      tl.from(".tile-zoom", { opacity: 0, x: 28, duration: 0.75, ease: "power3.out" }, 0.35);
+      tl.from("#caption-eyebrow", { opacity: 0, y: 12, duration: 0.45, ease: "power2.out" }, 0.6);
+      tl.from("#caption-headline", { opacity: 0, y: 16, duration: 0.6, ease: "power2.out" }, 0.72);
+
+      beats.forEach((beat, i) => {
+        tl.call(() => setBeat(beat), [], beat.start);
+        tl.fromTo("#tile-title", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, beat.start + 0.08);
+        tl.fromTo("#tile-note", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, beat.start + 0.18);
+        if (i === 0) setBeat(beat);
+      });
+
+      {{CAPTIONS_GSAP}}
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

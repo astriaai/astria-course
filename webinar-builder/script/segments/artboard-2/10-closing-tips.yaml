@@ -1,0 +1,38 @@
+id: 10-closing-tips
+title: "Closing tips"
+order: 10
+visual: presenter-slide
+duration: 28.0
+
+slide:
+  eyebrow: "CLOSING"
+  title_html: |
+    Three beginner rules
+    for <span class="accent">artboards</span>.
+  bullets:
+    - "Name the references: cast, wardrobe, location."
+    - "Ask for camera variety: wide, medium, close-up, details."
+    - "Refine in the same chat. Change one thing at a time."
+  bullet_starts: [3.0, 10.0, 17.0]
+
+caption:
+  eyebrow: "TIPS"
+  html: ""
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.38 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 3.0, volume: 0.25 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 10.0, volume: 0.25 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 17.0, volume: 0.25 }
+
+narration: |
+  Here are the rules to remember.
+
+  First, name the references. Tell the assistant which cast, garments,
+  and location should appear.
+
+  Second, ask for camera variety. A fast video needs wide shots, medium
+  shots, close-ups, and details.
+
+  Third, refine in the same chat. Do not rebuild from scratch. Ask for
+  one change, review the new artboard, and then generate the next video.

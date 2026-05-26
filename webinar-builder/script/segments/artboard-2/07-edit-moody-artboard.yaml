@@ -1,0 +1,40 @@
+id: 07-edit-moody-artboard
+title: "Refine the atmosphere"
+order: 7
+visual: screencast-pip
+duration: 48.0
+
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts"
+  record_script: "scripts/record/artboard-2/07-edit-moody-artboard.ts"
+
+caption:
+  eyebrow: "EDIT"
+  html: |
+    Same chat,
+    new <span class="accent">mood</span>.
+
+slide:
+  bullets:
+    - "Stay in the same chat"
+    - "Ask for one clear change"
+    - "Make it outdoor, moody, green"
+    - "Review the new prompt"
+    - "Open the refined artboard"
+  bullet_starts: [3.0, 10.0, 18.0, 30.0, 40.0]
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.42 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 10.0, volume: 0.28 }
+  - { src: "assets/sfx/ding-soft.mp3", start: 30.0, volume: 0.25 }
+
+narration: |
+  To edit the direction, stay in the same chat. Do not start over.
+
+  Ask for one clear change: make the same fashion video more moody,
+  darker, outdoor, and surrounded by greenery.
+
+  The assistant keeps the context, writes a new artboard prompt, and
+  creates a refined grid. This is the loop: create, inspect, then ask
+  for a focused change.
