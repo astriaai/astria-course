@@ -30,6 +30,7 @@ jobs:
             app.js
             style.css
             manifest.json
+            thumbs
             videos
 
       - name: Configure Pages
@@ -43,6 +44,7 @@ jobs:
           for f in .nojekyll index.html app.js style.css manifest.json; do
             [ -f "$f" ] && cp "$f" "_site/$f"
           done
+          [ -d thumbs ] && cp -a thumbs _site/thumbs
           [ -d videos ] && cp -a videos _site/videos
 
       - name: Upload Pages artifact
