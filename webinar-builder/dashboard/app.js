@@ -13,6 +13,15 @@ function attr(s) {
   return esc(s).replace(/'/g, "&#39;");
 }
 
+function routeHash(params) {
+  const qs = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value) qs.set(key, value);
+  }
+  const next = qs.toString();
+  return next ? `#${next}` : "#";
+}
+
 function fmtDur(sec) {
   if (!sec || sec <= 0) return "—";
   const s = Math.round(sec);
@@ -70,8 +79,13 @@ function channelCard(project, m) {
   const href = `#watch=${encodeURIComponent(project.id)}`;
   const status = statusClass(project);
   const failed = project.failedCount ? `<span class="warn">${project.failedCount} failed</span>` : "all segments built";
+  const searchText = [
+    project.title,
+    project.id,
+    project.segments.map((seg) => [seg.title, seg.visual, seg.id, seg.script].join(" ")).join(" "),
+  ].join(" ");
   return `
-    <article class="video-card">
+    <article class="video-card" data-search="${attr(searchText.toLowerCase())}">
       <a class="thumb-link" href="${href}" aria-label="Open ${attr(project.title)}">
         ${thumbnail(project.fullDraftUrl, project.title, project.duration, status, project.thumbnailUrl)}
       </a>
@@ -257,10 +271,11 @@ function route() {
   return {
     watch: params.get("watch"),
     segment: params.get("segment"),
+    q: params.get("q") || "",
   };
 }
 
-function topBar(m, title = "Astria Academy") {
+function topBar(m, title = "Astria Academy", q = "") {
   return `
     <header class="channel-top">
       <a class="brand" href="#">
@@ -268,7 +283,7 @@ function topBar(m, title = "Astria Academy") {
         <span>${esc(title)}</span>
       </a>
       <div class="search-shell">
-        <input type="search" id="search" placeholder="Search tutorials" aria-label="Search tutorials" />
+        <input type="search" id="search" placeholder="Search tutorials" aria-label="Search tutorials" value="${attr(q)}" />
       </div>
       <div class="top-meta">
         <span>${esc(m.buildMode)}</span>
@@ -277,11 +292,38 @@ function topBar(m, title = "Astria Academy") {
     </header>`;
 }
 
-function renderChannel(m) {
+function applySearch(q) {
+  const needle = q.trim().toLowerCase();
+  let shown = 0;
+  for (const card of document.querySelectorAll(".video-card")) {
+    const match = !needle || card.dataset.search.includes(needle);
+    card.hidden = !match;
+    if (match) shown += 1;
+  }
+  const empty = document.getElementById("no-results");
+  if (empty) empty.hidden = shown > 0;
+}
+
+function wireSearch(q, isWatchPage) {
+  const search = document.getElementById("search");
+  if (!search) return;
+  search.addEventListener("input", () => {
+    const next = search.value.trim();
+    if (isWatchPage) {
+      location.hash = routeHash({ q: next }).slice(1);
+      return;
+    }
+    history.replaceState(null, "", routeHash({ q: next }));
+    applySearch(next);
+  });
+  if (!isWatchPage) applySearch(q);
+}
+
+function renderChannel(m, q = "") {
   const totalDuration = m.projects.reduce((sum, p) => sum + (p.duration || 0), 0);
   document.title = "Astria Academy";
   document.getElementById("app").innerHTML = `
-    ${topBar(m)}
+    ${topBar(m, "Astria Academy", q)}
     <main class="channel">
       <section class="channel-hero">
         <div class="avatar">A</div>
@@ -298,6 +340,10 @@ function renderChannel(m) {
       <section class="video-grid" id="video-grid">
         ${m.projects.map((p) => channelCard(p, m)).join("")}
       </section>
+      <div class="no-results" id="no-results" hidden>
+        <h2>No tutorials found</h2>
+        <p>Try another search term.</p>
+      </div>
       <section class="debug-index" id="debug">
         <div class="section-title">Build Debug</div>
         <div class="debug-table">
@@ -317,23 +363,17 @@ function renderChannel(m) {
       </section>
     </main>`;
 
-  const search = document.getElementById("search");
-  search?.addEventListener("input", () => {
-    const q = search.value.trim().toLowerCase();
-    for (const card of document.querySelectorAll(".video-card")) {
-      card.hidden = q && !card.textContent.toLowerCase().includes(q);
-    }
-  });
+  wireSearch(q, false);
 }
 
-function renderWatch(m, projectId, segmentId) {
+function renderWatch(m, projectId, segmentId, q = "") {
   const project = m.projects.find((p) => p.id === projectId) || m.projects[0];
   if (!project) return renderChannel(m);
   const activeSegment = segmentId ? project.segments.find((s) => s.id === segmentId && s.videoUrl) || firstPlayableSegment(project) : null;
   const isSegmentMode = Boolean(segmentId && activeSegment);
   document.title = `${project.title} · Astria Academy`;
   document.getElementById("app").innerHTML = `
-    ${topBar(m, "Astria Academy")}
+    ${topBar(m, "Astria Academy", q)}
     <main class="watch">
       <section class="watch-main">
         <div class="watch-player-head">
@@ -368,12 +408,13 @@ function renderWatch(m, projectId, segmentId) {
     </main>`;
   if (isSegmentMode) document.querySelector(`[data-segment-id="${CSS.escape(activeSegment.id)}"]`)?.classList.add("active");
   wireWatchPlayer(project, activeSegment, isSegmentMode);
+  wireSearch(q, true);
 }
 
 function render(m) {
   const r = route();
-  if (r.watch) renderWatch(m, r.watch, r.segment);
-  else renderChannel(m);
+  if (r.watch) renderWatch(m, r.watch, r.segment, r.q);
+  else renderChannel(m, r.q);
 }
 
 fetch("manifest.json", { cache: "no-store" })
