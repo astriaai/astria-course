@@ -1,4 +1,4 @@
-# Astria Course
+# Astria Academy
 
 A bi-weekly series of cinematic tutorial videos for [Astria](https://www.astria.ai) —
 fashion-lookbook automation, edit-image, 3D packshots, video style transfer and

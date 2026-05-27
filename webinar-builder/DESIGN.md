@@ -1,4 +1,4 @@
-# Astria Course — Visual Identity
+# Astria Academy — Visual Identity
 
 ## Style Prompt
 

@@ -1,4 +1,4 @@
-/* Astria Course — channel dashboard.
+/* Astria Academy — channel dashboard.
    Static router over site/manifest.json: channel grid + per-video watch pages. */
 
 const STATUS_LABEL = { built: "Built", failed: "Render failed", unchanged: "Unchanged" };
@@ -186,7 +186,7 @@ function route() {
   };
 }
 
-function topBar(m, title = "Astria Course") {
+function topBar(m, title = "Astria Academy") {
   return `
     <header class="channel-top">
       <a class="brand" href="#">
@@ -205,7 +205,7 @@ function topBar(m, title = "Astria Course") {
 
 function renderChannel(m) {
   const totalDuration = m.projects.reduce((sum, p) => sum + (p.duration || 0), 0);
-  document.title = "Astria Course";
+  document.title = "Astria Academy";
   document.getElementById("app").innerHTML = `
     ${topBar(m)}
     <main class="channel">
@@ -259,9 +259,9 @@ function renderWatch(m, projectId, segmentId) {
     project.segments.find((s) => s.id === segmentId) ||
     project.segments.find((s) => s.status === "built") ||
     project.segments[0];
-  document.title = `${project.title} · Astria Course`;
+  document.title = `${project.title} · Astria Academy`;
   document.getElementById("app").innerHTML = `
-    ${topBar(m, "Astria Course")}
+    ${topBar(m, "Astria Academy")}
     <main class="watch">
       <section class="watch-main">
         <div class="main-player">
