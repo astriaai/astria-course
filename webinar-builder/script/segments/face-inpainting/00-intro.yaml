@@ -1,0 +1,32 @@
+id: 00-intro
+title: "Astria — Face Inpainting (TV intro)"
+order: 0
+visual: tv-intro
+
+duration: 10.0
+narration: ""
+
+intro:
+  # Face-inpainting-specific Seedance background. Generated via
+  #   scripts/run-seedance-face-inpainting.mjs
+  # against Astria's seedance_v15_720p model with a portrait-register
+  # motion prompt (slow head turn, soft eye contact, gentle micro-smile).
+  # The native Seedance clip is 5 seconds; the intro window is 10 seconds,
+  # so the clip is re-encoded at half speed (setpts=2.0) into the `-10s`
+  # variant. This fills the entire window with continuous motion and gives
+  # an even more editorial, slow-pour energy to the title sequence.
+  # Stretch command (re-runnable any time the source is regenerated):
+  #   ffmpeg -y -i 00-intro-seedance.mp4 -filter:v "setpts=2.0*PTS,fps=30" \
+  #     -an -c:v libx264 -pix_fmt yuv420p -preset slow -crf 18 \
+  #     -g 30 -keyint_min 30 -movflags +faststart 00-intro-seedance-10s.mp4
+  # Kept under assets/avatars/face-inpainting/ so the file is scoped to
+  # this module and does not touch the 3d-packshots or VST intros.
+  # Falls back to the still image when the .mp4 is missing.
+  background_video: "assets/avatars/face-inpainting/00-intro-seedance-10s.mp4"
+  background_image: "assets/avatars/video-style-transfer/intro-fullbody-wide.jpg"
+  title_html: "ASTRIA"
+  subtitle_html: "Face Inpainting"
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.6, volume: 0.6 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 2.0, volume: 0.4 }

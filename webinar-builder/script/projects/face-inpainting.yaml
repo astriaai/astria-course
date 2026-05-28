@@ -1,0 +1,49 @@
+# Project manifest — Astria Face Inpainting feature tutorial.
+# Standalone module under the bi-weekly cadence. The whole video lives inside
+# the Astria prompts UI: enable the "Inpaint faces" toggle on a generation and
+# compare the two output versions ("1 Final" with face inpaint applied vs
+# "2 Inpaint Woman Original" — the raw face from the base model).
+#
+# Editorial portrait/beauty register — close-up faces, atelier vocabulary.
+
+meta:
+  title: "Astria · Face Inpainting"
+  presenter: "Astria"
+  resolution: "1920x1080"
+  fps: 30
+
+defaults:
+  tts:
+    provider: "gemini"
+    voice: "Aoede"
+    model: "gemini-3.1-flash-tts-preview"
+
+  music:
+    # Same bed as 3d-packshots — "Acid Jazz Groove" by alex-morgan, Pixabay
+    # CC0 (no attribution required):
+    # https://pixabay.com/music/cafe-acid-jazz-groove-517096/
+    # The portrait/beauty register sits well over the same smooth funk pad.
+    src: "assets/music/acid-jazz-groove.mp3"
+    volume: 0.55
+    # Mix the bed in once at the stitch stage with sidechain ducking against
+    # the narration; keeps it continuous across segment boundaries and pulls
+    # it ~8 dB under whenever Yuli speaks. See pipeline/stitch.ts.
+    mix_at_stitch: true
+
+  # Presenter — Yuli, the course's recurring presenter. One face for the
+  # whole series. Same headshot, same engine, same look as every other module.
+  avatar:
+    image_url: "assets/avatars/yuli.jpg"
+    engine: "infinitetalk"
+    resolution: "720p"
+    video_prompt: >-
+      Subtle natural micro-expressions and very small head movements, calm
+      steady pose, looking directly at the camera with quiet confidence, no
+      hand gestures, minimal upper-body motion.
+
+segments:
+  - 00-intro              # TV-show open with editorial Seedance + serif title (~10s)
+  - 01-overview           # Yuli + caption: "real faces, real skin, no AI look" (~26s)
+  - 02-before-after       # Close-up side-by-side: 1 Final (Inpaint on) vs 2 Original (~22s)
+  - 02-workflow           # UI slideshow: prompts page → Inpaint faces toggle → 1 vs 2 (~55s)
+  - 03-faqs               # FAQ slide — when to use it, what stays the same (~45s)

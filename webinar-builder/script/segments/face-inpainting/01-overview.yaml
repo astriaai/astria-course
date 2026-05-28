@@ -1,0 +1,32 @@
+id: 01-overview
+title: "Real faces, real skin"
+order: 1
+visual: presenter-slide
+
+# Editorial intro beat — Yuli on the right, one caption on the left. The
+# claim is not "looks real" — it is "is real". Inpaint faces rebuilds the
+# face area with photographic texture: pores, lashes, skin that reads as
+# a person and not a render.
+slide:
+  eyebrow: "FACE INPAINTING"
+  title_html: |
+    Real faces.
+    <span class="accent">Real skin.</span>
+    No AI look.
+  bullets:
+    - "Inpaint faces rebuilds the face with photographic texture — pores, lashes, lips that read as a person."
+    - "Every generation comes back with two versions: the raw frame, and the inpainted final."
+  bullet_starts: [3.0, 7.0]
+
+narration: |
+  Generative portraits look almost right, until you zoom in. Soft eyes,
+  plasticky skin, that telltale AI sheen. Inpaint faces fixes exactly
+  that. Turn it on, and Astria rebuilds the face area with real
+  photographic texture: pores, lashes, the kind of detail that reads
+  as a person and not a render. Every generation comes back with two
+  versions, so you can see the difference for yourself.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 3.0, volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 7.0, volume: 0.4 }

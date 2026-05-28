@@ -1,0 +1,64 @@
+id: 02-workflow
+title: "Workflow — write, pick a model, toggle Inpaint, generate, compare"
+order: 2
+visual: screencast-pip
+
+# Bulk of the video. The screencast.mp4 is produced by running
+#   HEADED=1 npm run record-screencast -- --project face-inpainting 02-workflow
+# which executes scripts/record/face-inpainting/02-workflow.ts inside Playwright.
+#
+# Recording flow (~55s) — every beat is the live Astria UI, no downloaded stills:
+#   0–6s     land on https://www.astria.ai/prompts?ws=6
+#   6–18s    hover the prompt textarea, attach reference chips
+#   18–26s   hover the model selector ("Nano Banana 2 - Gemini 3.1 Flash…")
+#   26–36s   flip the "Inpaint faces" toggle ON
+#   36–44s   click send, brief queue beat
+#   44–55s   press 1 / 2 on the keyboard to swap between Final and Original
+screencast:
+  mode: "video"
+  url: "astria.ai/prompts?ws=6"
+  record_script: "scripts/record/face-inpainting/02-workflow.ts"
+
+caption:
+  eyebrow: "WORKFLOW"
+  html: |
+    Write. Pick a model.
+    Toggle <span class="accent">Inpaint faces</span>.
+    Generate. Compare 1 vs 2.
+
+slide:
+  bullets:
+    - "Write your prompt and attach your reference chips."
+    - "Pick the model — Nano Banana, Gemini, whichever fits the brief."
+    - "Flip the Inpaint faces toggle on, right next to the model picker."
+    - "Hit send."
+    - "Press 1 and 2 on the keyboard to swap versions and compare."
+  bullet_starts: [6.0, 18.0, 26.0, 36.0, 44.0]
+
+narration: |
+  Here is the whole flow, top to bottom, inside Astria.
+
+  Write your prompt the way you normally would. Editorial portrait,
+  lighting notes, film stock, the references you want pinned in.
+
+  Pick the model. Nano Banana, Gemini, whichever you have been
+  working with. The Inpaint faces toggle sits in the same row as
+  the model picker.
+
+  Flip the Inpaint faces toggle on.
+
+  Hit send. The queue picks it up, and in a moment the result
+  comes back.
+
+  Now the compare. Press one and two on your keyboard to toggle
+  between the two versions. One is the inpainted final. Two is the
+  raw generation from the base model. Same pose, same wardrobe,
+  same light. A noticeably more photographic face.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2,  volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 6.0,  volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 18.0, volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 26.0, volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 36.0, volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 44.0, volume: 0.45 }

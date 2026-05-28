@@ -68,7 +68,15 @@ async function runRecording(project: string, segmentId: string, script: RecordSc
     console.log(`[record] ${segmentId}: HEADED mode (slowMo=${slowMo}ms) — Chromium window will open`);
   }
 
-  const browser = await chromium.launch({ headless: !headed, slowMo });
+  // Windows headless Chromium + a hybrid Intel/NVIDIA GPU can record an
+  // all-black webm because the GPU compositor writes to a surface the
+  // recorder can't read. Forcing software rendering (no real GPU path)
+  // fixes the black-frame issue without affecting Mac/Linux runs.
+  // Gated on platform so we don't slow down macOS/Linux unnecessarily.
+  const launchArgs: string[] = process.platform === "win32"
+    ? ["--disable-gpu", "--use-gl=swiftshader"]
+    : [];
+  const browser = await chromium.launch({ headless: !headed, slowMo, args: launchArgs });
   const storageStatePath = join(ROOT, "storageState.json");
   const useStorageState = existsSync(storageStatePath);
   if (useStorageState) {

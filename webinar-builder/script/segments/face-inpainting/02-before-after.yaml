@@ -1,0 +1,64 @@
+id: 02-before-after
+title: "Before / after — Final vs Inpaint Woman Original"
+order: 2
+visual: video-showcase
+
+# The teaching beat: a close-up zoom (223% in the Astria UI) of the same
+# generation toggled between the two output versions. Same pose, same
+# wardrobe, same light — only the face is rebuilt. Lets the viewer
+# judge the delta themselves before we walk through the workflow.
+#
+# Source: ui-face-final.png / ui-face-original.png are saved screen
+# captures of the Astria prompts page with the result panel at 223% zoom
+# and the "1 Final" / "2 Inpaint Woman Original" toggle visible at the
+# bottom of each. Each PNG is cropped to a tight 3:4 portrait (cropped
+# PNG saved alongside, suffix -crop.png) and re-rendered as a 22-second
+# MP4 with a gentle Ken-Burns push-in (1.0× → 1.10× centered), so the
+# showcase pane has continuous motion and no white Astria-UI gutter
+# showing on the sides.
+#
+# Regenerate with the two-step recipe (zoompan kept crashing /
+# producing 200+ MB files on this ffmpeg build, so we use scale with
+# eval=frame instead, which is rock-solid):
+#   for k in final original; do
+#     src="assets/results/face-inpainting/ui-face-${k}.png"
+#     W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width  -of csv=p=0 "$src")
+#     H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$src")
+#     CW=$((H*3/4)); CX=$(((W-CW)/2))
+#     ffmpeg -y -i "$src" -vf "crop=${CW}:${H}:${CX}:0" -frames:v 1 \
+#       "assets/results/face-inpainting/ui-face-${k}-crop.png"
+#     ffmpeg -y -loop 1 -t 22 -i "assets/results/face-inpainting/ui-face-${k}-crop.png" \
+#       -vf "scale=w='trunc(iw*(1+0.10*min(n/660\,1))/2)*2':h='trunc(ih*(1+0.10*min(n/660\,1))/2)*2':eval=frame,crop=600:800:(iw-600)/2:(ih-800)/2,format=yuv420p" \
+#       -r 30 -c:v libx264 -tune stillimage -preset fast -crf 22 -movflags +faststart \
+#       "assets/results/face-inpainting/ui-face-${k}-zoom.mp4"
+#   done
+showcase:
+  videos:
+    - src: "assets/results/face-inpainting/ui-face-final-crop.png"
+      label: "1 · FINAL (INPAINT ON)"
+    - src: "assets/results/face-inpainting/ui-face-original-crop.png"
+      label: "2 · INPAINT WOMAN ORIGINAL"
+
+caption:
+  eyebrow: "BEFORE / AFTER"
+  html: |
+    Same pose. Same light.
+    <span class="accent">A different face.</span>
+
+narration: |
+  Same generation, toggled between the two versions Astria returns.
+
+  On the left, version one, the inpainted final. The face has been
+  rebuilt by a dedicated face model. Eyes sharper, proportions
+  locked, skin smoothed into a campaign finish.
+
+  On the right, version two, the raw original. Same pose, same
+  wardrobe, same light, but the face is the base model's first
+  pass. Texture is rawer, the read is closer to a candid.
+
+  You always get both. Which one you ship depends on the brief.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2, volume: 0.55 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 4.5, volume: 0.4 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 13.0, volume: 0.4 }

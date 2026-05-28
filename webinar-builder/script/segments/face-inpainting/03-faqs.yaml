@@ -1,0 +1,32 @@
+id: 03-faqs
+title: "FAQs"
+order: 3
+visual: presenter-slide
+
+slide:
+  eyebrow: "FAQ"
+  title_html: |
+    Two things to
+    <span class="accent">know</span>.
+  bullets:
+    - "When to use it. Face portraits, fashion, beauty — anywhere there is a human face in the frame, you turn it on for a more authentic look."
+    - "What stays the same. Pose, wardrobe, lighting, and the camera notes you wrote into the prompt. Only the face is rebuilt. Identity references stay pinned."
+  bullet_starts: [3.0, 14.0]
+
+narration: |
+  Two things to know.
+
+  When to use it. Face portraits, fashion, beauty — anywhere there
+  is a human face in the frame, you turn Inpaint faces on for a
+  more authentic look. It is the difference between a face that
+  reads as a person and a face that reads as a render.
+
+  What stays the same. Pose, wardrobe, lighting, and the camera
+  notes you wrote into the prompt all hold. Only the face area is
+  rebuilt. Identity references stay pinned, so the person you
+  chose is the person Astria keeps.
+
+sfx:
+  - { src: "assets/sfx/whoosh-soft.mp3", start: 0.2,  volume: 0.5 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 3.0,  volume: 0.45 }
+  - { src: "assets/sfx/ding-soft.mp3",   start: 14.0, volume: 0.45 }
