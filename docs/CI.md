@@ -68,8 +68,10 @@ to force one.
 setup action also caches Playwright's browser binaries under
 `~/.cache/ms-playwright`, keyed by `webinar-builder/package-lock.json`.
 Ubuntu system packages still install on each fresh runner, but Chromium should
-only download on cache misses. External install steps are wrapped with `timeout`
-so a stuck setup fails visibly instead of blocking the publish lane.
+only download on cache misses. External install steps are wrapped with `timeout`,
+and workflows put a 45-minute ceiling on setup, so a stuck setup fails visibly.
+The `main` publish lane also cancels older in-progress publishes when a newer
+push arrives, which keeps an obsolete run from blocking the current site.
 
 `gh-pages` is rebuilt as a single fresh orphan commit on every deploy
 (`pipeline/ci/gh-pages.ts`), so its history never bloats; git deduplicates

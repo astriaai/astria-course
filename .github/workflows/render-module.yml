@@ -42,6 +42,7 @@ jobs:
 
       - name: Set up build environment
         uses: ./.github/actions/setup-build
+        timeout-minutes: 45
 
       - name: Restore artifact cache from gh-pages
         working-directory: webinar-builder

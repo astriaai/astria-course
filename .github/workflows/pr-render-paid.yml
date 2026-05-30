@@ -52,6 +52,7 @@ jobs:
 
       - name: Set up build environment
         uses: ./.github/actions/setup-build
+        timeout-minutes: 45
 
       - name: Fetch PR base
         run: git fetch --no-tags origin ${{ steps.pr.outputs.base_ref }}
