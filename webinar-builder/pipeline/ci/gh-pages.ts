@@ -164,14 +164,19 @@ function buildPlan(target: string, updateCache: boolean, publishCache: boolean, 
   if (!existsSync(SITE)) throw new Error("site/ missing — run 'npm run dashboard' first");
   for (const f of readdirSync(SITE)) entries.push({ path: prefix + f, src: join(SITE, f) });
 
-  // 2. videos for this build — curated copy of out/<project>/*.mp4 under TMP/videos
+  // 2. videos for this build — curated copy of out/<project>/*.mp4 under
+  // TMP/videos/<project>. Keep each project as its own publish entry so a
+  // scoped `--only-project` refresh cannot delete sibling module videos that
+  // are still referenced by the root dashboard manifest.
   const vids = join(TMP, "videos");
   rmSync(vids, { recursive: true, force: true });
+  const publishedProjects: string[] = [];
   // GitHub rejects any pushed file > 100 MB (GH001 pre-receive hook). Skip
   // oversized videos so the publish push can't die on one — stitch.ts keeps
   // full-draft cuts under this, so in practice nothing is skipped.
   const MAX_PUSH_BYTES = 99 * 1024 * 1024;
   for (const p of projectsWithOutput(onlyProject)) {
+    publishedProjects.push(p);
     mkdirSync(join(vids, p), { recursive: true });
     for (const f of readdirSync(join(OUT, p))) {
       // .mp4 = the video; .mp4.key = its render-cache key (skips re-render).
@@ -184,7 +189,9 @@ function buildPlan(target: string, updateCache: boolean, publishCache: boolean, 
       cpSync(src, join(vids, p, f));
     }
   }
-  if (existsSync(vids) && readdirSync(vids).length) entries.push({ path: prefix + "videos", src: vids });
+  for (const p of publishedProjects) {
+    entries.push({ path: prefix + `videos/${p}`, src: join(vids, p) });
+  }
 
   // 3. input media the GUI links to (= assets/, the gitignored generated dirs)
   if (publishMedia && existsSync(ASSETS)) entries.push({ path: prefix + "media", src: ASSETS });

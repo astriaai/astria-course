@@ -32,6 +32,7 @@ Each open PR also gets its own preview at `…/pr-<N>/`.
 | `pr-build.yml` | PR opened / pushed | DRAFT render of affected modules → preview at `pr-<N>/` | free |
 | `pr-render-paid.yml` | PR comment `/render-paid` (write access) | real paid render → updates `pr-<N>/` + shared cache | paid, cache-gated |
 | `publish.yml` | push to `main` | render every module, stitch, publish to site root | mostly free (cache) |
+| `pages-deploy.yml` | push to `gh-pages` or manual dispatch | deploy the current `gh-pages` artifact tree to GitHub Pages | free |
 | `pr-cleanup.yml` | PR closed | remove `pr-<N>/` preview | free |
 | `claude.yml` | `@claude` mention | interactive Claude Code | Anthropic API |
 | `claude-review.yml` | PR opened / pushed | automatic Claude code review | Anthropic API |
@@ -104,3 +105,45 @@ Screencast recording can't run in CI (it needs a logged-in Astria session),
 so `NO_SCREENCAST=1` skips it and falls back to each segment's
 `screencast.fallback_image`. Record screencasts locally and let CI consume
 them from the cache.
+
+## Publishing safely
+
+Use the helper instead of hand-running a partial root publish:
+
+```bash
+cd webinar-builder
+npm run publish:academy
+```
+
+If local API keys are available, it restores the cache, builds and stitches all
+modules locally, rebuilds the dashboard, publishes all root artifacts to
+`gh-pages`, and triggers the Pages deploy workflow. A direct push to `gh-pages`
+also triggers `pages-deploy.yml`, so locally published artifacts become live
+without a separate manual redeploy. If the required local keys are not
+available, the helper triggers the GitHub `Publish course` workflow so the build
+happens with repository secrets.
+
+To install the optional local pre-push hook:
+
+```bash
+cd webinar-builder
+npm run hooks:install
+```
+
+The hook runs before pushes to `main`. With local keys it publishes artifacts
+first; without local keys it lets the push continue so the `push` trigger on
+`publish.yml` builds and publishes from GitHub.
+
+Do not use a scoped root publish for the course site unless you only want to
+refresh one project's video blobs while preserving every other project:
+
+```bash
+npm run ci:publish -- root --only-project face-inpainting
+```
+
+The publish script preserves sibling `videos/<project>/` folders for scoped
+refreshes, but the safest main-site publish remains:
+
+```bash
+npm run ci:publish -- root
+```

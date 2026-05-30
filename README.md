@@ -38,4 +38,11 @@ docs/CI.md            how CI & publishing work
 See [`docs/CI.md`](docs/CI.md) for the full workflow and
 [`webinar-builder/README.md`](webinar-builder/README.md) for the pipeline.
 
+For an explicit local-or-GitHub publish, run:
+
+```bash
+cd webinar-builder
+npm run publish:academy
+```
+
 Mention **`@claude`** in any PR or issue for help.

@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+pushes_main=0
+while read local_ref local_sha remote_ref remote_sha
+do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    pushes_main=1
+  fi
+done
+
+if [ "$pushes_main" -ne 1 ]; then
+  exit 0
+fi
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root/webinar-builder"
+
+if [ "${ASTRIA_SKIP_PRE_PUSH_PUBLISH:-}" = "1" ]; then
+  echo "[pre-push] ASTRIA_SKIP_PRE_PUSH_PUBLISH=1; skipping academy publish helper."
+  exit 0
+fi
+
+echo "[pre-push] main push detected; publishing academy artifacts first."
+node scripts/publish-academy.mjs --pre-push

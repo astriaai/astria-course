@@ -29,7 +29,9 @@
     "dashboard": "tsx pipeline/build-dashboard.ts",
     "ci:affected": "tsx pipeline/ci/affected.ts",
     "ci:restore": "tsx pipeline/ci/gh-pages.ts restore",
-    "ci:publish": "tsx pipeline/ci/gh-pages.ts publish"
+    "ci:publish": "tsx pipeline/ci/gh-pages.ts publish",
+    "publish:academy": "node scripts/publish-academy.mjs",
+    "hooks:install": "node scripts/install-git-hooks.mjs"
   },
   "keywords": [],
   "author": "",
