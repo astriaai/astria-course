@@ -126,9 +126,9 @@ function buildDateLabel(m) {
   return label ? `Updated ${label}` : "Latest build";
 }
 
-function addedDateLabel(project) {
+function publishDateLabel(project) {
   const label = dateLabel(project.addedAt);
-  return label ? `Added ${label}` : "Added date unavailable";
+  return label ? `Published ${label}` : "Publish date unavailable";
 }
 
 function statusClass(project) {
@@ -198,7 +198,7 @@ function channelCard(project) {
         <a class="video-title" href="${href}">${esc(project.title)}</a>
         ${shareButton(project.title, href)}
       </div>
-      <div class="video-meta">${countViews(project)} · ${addedDateLabel(project)}</div>
+      <div class="video-meta">${countViews(project)} · ${publishDateLabel(project)}</div>
       <div class="video-submeta">${cardDetails(project)}</div>
     </article>`;
 }

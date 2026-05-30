@@ -154,6 +154,11 @@ function projectGitInfo(pid: string): ProjectGitInfo {
   };
 }
 
+function dateTime(value: string | null | undefined): number {
+  const time = Date.parse(value || "");
+  return Number.isFinite(time) ? time : Number.NEGATIVE_INFINITY;
+}
+
 function main() {
   rmSync(SITE, { recursive: true, force: true });
   mkdirSync(SITE, { recursive: true });
@@ -167,60 +172,66 @@ function main() {
     .filter((pid) => dashboardProjectFilter.length === 0 || dashboardProjectFilter.includes(pid))
     .sort();
 
-  const projects = projectIds.map((pid) => {
-    const manifest = loadYaml<ProjectManifest>(join(ROOT, "script", "projects", `${pid}.yaml`));
-    const gitInfo = projectGitInfo(pid);
-    const segIds = manifest?.segments ?? [];
-    // In a `main` build every module is rendered; in a PR only the affected
-    // ones — others are shown as "unchanged" pointing at the live main site.
-    const inBuild = buildMode === "main" || !affectedSet || affected.includes(pid);
+  const projects = projectIds
+    .map((pid) => {
+      const manifest = loadYaml<ProjectManifest>(join(ROOT, "script", "projects", `${pid}.yaml`));
+      const gitInfo = projectGitInfo(pid);
+      const segIds = manifest?.segments ?? [];
+      // In a `main` build every module is rendered; in a PR only the affected
+      // ones — others are shown as "unchanged" pointing at the live main site.
+      const inBuild = buildMode === "main" || !affectedSet || affected.includes(pid);
 
-    const segments = segIds.map((sid) => {
-      const seg =
-        loadYaml<SegmentYaml>(join(ROOT, "script", "segments", pid, `${sid}.yaml`)) ?? {};
-      const outMp4 = join(ROOT, "out", pid, `${sid}.mp4`);
-      const built = existsSync(outMp4);
-      const status = !inBuild ? "unchanged" : built ? "built" : "failed";
-      const localVideo = `videos/${pid}/${sid}.mp4`;
-      const videoUrl =
-        status === "unchanged" && pagesBaseUrl ? `${pagesBaseUrl}/${localVideo}` : localVideo;
+      const segments = segIds.map((sid) => {
+        const seg =
+          loadYaml<SegmentYaml>(join(ROOT, "script", "segments", pid, `${sid}.yaml`)) ?? {};
+        const outMp4 = join(ROOT, "out", pid, `${sid}.mp4`);
+        const built = existsSync(outMp4);
+        const status = !inBuild ? "unchanged" : built ? "built" : "failed";
+        const localVideo = `videos/${pid}/${sid}.mp4`;
+        const videoUrl =
+          status === "unchanged" && pagesBaseUrl ? `${pagesBaseUrl}/${localVideo}` : localVideo;
+        return {
+          id: sid,
+          title: seg.title || sid,
+          visual: seg.visual || "—",
+          script: scriptText(seg),
+          status,
+          duration: built ? ffprobe(outMp4) : null,
+          videoUrl: status === "failed" ? null : videoUrl,
+          thumbnailUrl: built ? thumbnailUrl(pid, sid, outMp4) : null,
+          inputs: {
+            avatar: mediaUrl("avatars", pid, `${sid}.mp4`),
+            audio: mediaUrl("audio", pid, `${sid}.mp3`),
+            capture: mediaUrl("captures", pid, `${sid}.mp4`),
+          },
+        };
+      });
+
+      // Only link a video GitHub Pages will actually serve (≤ 100 MB push limit).
+      const servable = (abs: string) => existsSync(abs) && statSync(abs).size <= 99 * 1024 * 1024;
+      const fullDraftAbs = join(ROOT, "out", pid, "_full-draft.mp4");
+      const builtCount = segments.filter((s) => s.status === "built").length;
       return {
-        id: sid,
-        title: seg.title || sid,
-        visual: seg.visual || "—",
-        script: scriptText(seg),
-        status,
-        duration: built ? ffprobe(outMp4) : null,
-        videoUrl: status === "failed" ? null : videoUrl,
-        thumbnailUrl: built ? thumbnailUrl(pid, sid, outMp4) : null,
-        inputs: {
-          avatar: mediaUrl("avatars", pid, `${sid}.mp4`),
-          audio: mediaUrl("audio", pid, `${sid}.mp3`),
-          capture: mediaUrl("captures", pid, `${sid}.mp4`),
-        },
+        id: pid,
+        title: cleanProjectTitle(manifest?.meta?.title || pid) || pid,
+        tags: normalizeTags(manifest?.meta?.tags),
+        addedAt: gitInfo.addedAt,
+        addedCommit: gitInfo.addedCommit,
+        inBuild,
+        segmentCount: segments.length,
+        builtCount,
+        failedCount: segments.filter((s) => s.status === "failed").length,
+        duration: segments.reduce((t, s) => t + (s.duration || 0), 0),
+        fullDraftUrl: servable(fullDraftAbs) ? `videos/${pid}/_full-draft.mp4` : null,
+        thumbnailUrl: servable(fullDraftAbs) ? thumbnailUrl(pid, "_full-draft", fullDraftAbs) : null,
+        segments,
       };
+    })
+    .sort((a, b) => {
+      const byPublishDate = dateTime(b.addedAt) - dateTime(a.addedAt);
+      if (byPublishDate !== 0) return byPublishDate;
+      return a.title.localeCompare(b.title) || a.id.localeCompare(b.id);
     });
-
-    // Only link a video GitHub Pages will actually serve (≤ 100 MB push limit).
-    const servable = (abs: string) => existsSync(abs) && statSync(abs).size <= 99 * 1024 * 1024;
-    const fullDraftAbs = join(ROOT, "out", pid, "_full-draft.mp4");
-    const builtCount = segments.filter((s) => s.status === "built").length;
-    return {
-      id: pid,
-      title: cleanProjectTitle(manifest?.meta?.title || pid) || pid,
-      tags: normalizeTags(manifest?.meta?.tags),
-      addedAt: gitInfo.addedAt,
-      addedCommit: gitInfo.addedCommit,
-      inBuild,
-      segmentCount: segments.length,
-      builtCount,
-      failedCount: segments.filter((s) => s.status === "failed").length,
-      duration: segments.reduce((t, s) => t + (s.duration || 0), 0),
-      fullDraftUrl: servable(fullDraftAbs) ? `videos/${pid}/_full-draft.mp4` : null,
-      thumbnailUrl: servable(fullDraftAbs) ? thumbnailUrl(pid, "_full-draft", fullDraftAbs) : null,
-      segments,
-    };
-  });
 
   const manifest = {
     generatedAt: new Date().toISOString(),
