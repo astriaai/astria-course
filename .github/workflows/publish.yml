@@ -1,9 +1,8 @@
 name: Publish course
 
-# On every push to main: render every course module for real, stitch the
-# full-length cuts, regenerate the debug dashboard, and publish it to the
-# gh-pages site root. The artifact cache is restored first and saved back, so
-# segments already rendered in a PR (`/render-paid`) cost nothing here.
+# On every push to main: restore the artifact cache, render the affected course
+# modules for real, regenerate the debug dashboard, and publish it to the
+# gh-pages site root. Manual dispatch still renders every module.
 
 on:
   push:
@@ -37,7 +36,41 @@ jobs:
         working-directory: webinar-builder
         run: npm run ci:restore
 
-      - name: Render + stitch every module (PAID — cache-gated)
+      - name: Detect affected projects
+        if: github.event_name == 'push'
+        id: affected
+        working-directory: webinar-builder
+        env:
+          BASE_REF: ${{ github.event.before }}
+        run: npm run -s ci:affected
+
+      - name: Render + stitch affected modules (PAID — cache-gated)
+        if: github.event_name == 'push' && steps.affected.outputs.any == 'true'
+        working-directory: webinar-builder
+        env:
+          NO_SCREENCAST: "1"
+          VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
+          WAVESPEED_API_KEY: ${{ secrets.WAVESPEED_API_KEY }}
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+          BYTEPLUS_ACCESS_KEY_ID: ${{ secrets.BYTEPLUS_ACCESS_KEY_ID }}
+          BYTEPLUS_SECRET_ACCESS_KEY: ${{ secrets.BYTEPLUS_SECRET_ACCESS_KEY }}
+          REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
+          ASTRIA_AUTH_TOKEN: ${{ secrets.ASTRIA_AUTH_TOKEN }}
+          GEMINI_TUNE_ID: ${{ secrets.GEMINI_TUNE_ID }}
+          WORKSPACE_ID: ${{ secrets.WORKSPACE_ID }}
+          ASTRIA_BASE_URL: ${{ secrets.ASTRIA_BASE_URL }}
+        run: |
+          export HF_WORKERS=$(nproc)
+          echo "rendering: HF_WORKERS=$HF_WORKERS, one segment at a time"
+          for p in $(echo '${{ steps.affected.outputs.projects }}' | tr -d '[]"' | tr ',' ' '); do
+            echo "::group::render $p"
+            npx tsx pipeline/build.ts --project "$p" --all --parallel 1
+            npx tsx pipeline/stitch.ts --project "$p" || echo "stitch skipped for $p"
+            echo "::endgroup::"
+          done
+
+      - name: Render + stitch every module (manual PAID — cache-gated)
+        if: github.event_name == 'workflow_dispatch'
         working-directory: webinar-builder
         env:
           NO_SCREENCAST: "1"
